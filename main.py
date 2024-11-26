@@ -3,7 +3,7 @@
 # Deep Sea Diver Game 
 
 
-import pygame, sys, manager, interfaces.title
+import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits
 pygame.init()
 
 
@@ -11,5 +11,12 @@ pygame.init()
 window = pygame.display.set_mode((manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT), pygame.HWSURFACE)
 pygame.display.set_caption("Deep sea Divers")
 
-if manager.level == 0:
+
+while True:
+  if manager.level == 0:
     interfaces.title.output(window)
+  elif manager.level == 1:
+    interfaces.help.output(window)
+  elif manager.level == 2:
+    interfaces.credits.output(window)
+    

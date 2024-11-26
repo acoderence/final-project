@@ -11,7 +11,7 @@ pygame.init()
     
 def output(window):
     font = pygame.font.SysFont('Consoles',35)  
-    bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"")  #images in objects 
+    bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"creditbg.png")  #images in objects 
     btn_back=objects.buttons.with_images(100, 100, 350,30,"images/back.png, images/back(2).png")
     btn_exit= objects.buttons.with_images(100, 100, 400,30,"images/exit.png, images/exit(2).png")
     run = True
