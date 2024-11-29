@@ -3,6 +3,7 @@
 # Deep Sea Diver Game 
 
 
+import interfaces.game
 import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits
 pygame.init()
 
@@ -19,4 +20,6 @@ while True:
     interfaces.help.output(window)
   elif manager.level == 2:
     interfaces.credits.output(window)
+  elif manager.level == 3:
+    interfaces.game.output(window)
     
