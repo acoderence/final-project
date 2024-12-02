@@ -3,7 +3,7 @@ import objects.images
 import manager
 import objects.movable
 
-class kill(objects.images.still):
+class kill(objects.images.still): ##check
     def __init__(self, x, y,width,height,image_to_use,speed):
         super().__init__(x, y,width,height, image_to_use)
         self.speed = speed

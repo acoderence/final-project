@@ -4,13 +4,13 @@
 
 
 import interfaces.game
-import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits
+import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits, interfaces.merchant
 pygame.init()
 
 
 
 window = pygame.display.set_mode((manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT), pygame.HWSURFACE)
-pygame.display.set_caption("Deep sea Divers")
+pygame.display.set_caption("Deep Sea Divers")
 
 
 while True:
@@ -22,4 +22,7 @@ while True:
     interfaces.credits.output(window)
   elif manager.level == 3:
     interfaces.game.output(window)
+  elif manager.level == 4:
+    interfaces.merchant.output(window)
+  
     
