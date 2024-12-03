@@ -4,7 +4,8 @@
 
 
 import interfaces.game
-import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits, interfaces.merchant
+import interfaces.intro
+import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits, interfaces.merchant, interfaces.intro, interfaces.buy
 pygame.init()
 
 
@@ -23,6 +24,12 @@ while True:
   elif manager.level == 3:
     interfaces.game.output(window)
   elif manager.level == 4:
+    interfaces.intro.output(window)
+  elif manager.level == 5:
     interfaces.merchant.output(window)
+  elif manager.level == 6:
+    interfaces.buy.output(window)
+    
+
   
     

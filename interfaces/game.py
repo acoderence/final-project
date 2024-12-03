@@ -10,11 +10,26 @@ import objects.buttons
 
 def output(window): 
     font = pygame.font.SysFont('Consoles',35)  
-    bg= objects.images.animated(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"iamges/gamebg.jpg")  #images in objects 
-    btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
-    btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
+    bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/gamebgg.png")  #images in objects 
+    btn_back=objects.buttons.with_images(670, 10, 40,40,"images/back.png", "images/back(2).png")
+    btn_exit= objects.buttons.with_images(730,10, 40,40,"images/exit.png", "images/exit(2).png")
+    kelp= objects.images.animated(760,440,40,40,"images/seaweed.gif",50) 
+    kelp=objects.images.animated(40,440,40,40,"images/seaweed.gif",50) 
     run = True
     pygame.display.set_caption("GAME")
+
+
+    def gridHelp(window,WINDOW_WIDTH, WINDOW_HEIGHT):#just the grid as always
+        spacer = 10
+        font = pygame.font.SysFont('Consolas', 10)
+        for gridX in range(0, WINDOW_WIDTH, spacer):        
+            window.blit(pygame.transform.rotate(font.render(str(gridX), True, (0, 0, 0)),90),(gridX,0))
+        for gridY in range(0, WINDOW_HEIGHT, spacer):
+            window.blit(font.render(str(gridY), True, (0, 0, 0)), (0, gridY))
+        for gridX in range(0, WINDOW_WIDTH, spacer):
+            pygame.draw.line(window,(255,0,0),(gridX,0),(gridX,WINDOW_HEIGHT))
+        for gridY in range(0, WINDOW_HEIGHT, spacer):
+            pygame.draw.line(window,(255,0,0),(0,gridY),(WINDOW_WIDTH,gridY))
 
     
 
@@ -25,6 +40,7 @@ def output(window):
         bg.draw(window)
         btn_back.draw(window)
         btn_exit.draw(window)
+        kelp.draw(window)
        
        
        
