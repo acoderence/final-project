@@ -103,6 +103,7 @@ def output(window):
             
             if btn_exit.update(pygame.mouse.get_pos(),event):
                 run = False
+                manager.level = -1
                 
             if event.type == pygame.QUIT: #Quits
                             pygame.quit()
