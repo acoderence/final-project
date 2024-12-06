@@ -1,13 +1,19 @@
-import pygame, sys, manager, objects.images, objects.buttons, sqlite3, objects.data_stuff, objects.text
+import pygame, sys, manager, objects.images, objects.buttons, sqlite3, objects.data_stuff, objects.text, objects.movable
 
-manager.WINDOW_WIDTH = 800
+
 def output(window): 
     
     run = True
     beach = objects.images.still(0,-20, 800, 800, "images/beach.jpg")
-    dock = objects.images.still(10,350, 900, 200, "images/dock.png")   
-    hut = objects.images.still(670,120, 300, 300, "images/hut.png")   
-    sign = objects.images.still(50,290, 120, 100, "images/sign.png")   
+    dock = objects.images.still(-40,350, 900, 200, "images/dock.png")   
+    hut = objects.images.still(370,120, 300, 300, "images/hut.png")   
+    sign = objects.images.still(0,290, 120, 100, "images/sign.png")   
+    player = objects.movable.movable(190,260,120,180, "images/placer.png",6)
+    btn_exit = objects.buttons.with_images(430,10,80,80,"images/exit.png", "images/exit(2).png")
+    btn_back = objects.buttons.with_images(370, 10, 80,80,"images/back.png", "images/back(2).png")
+    shop_open= objects.images.still(370,120, 300, 300, "images/hut_open.png")  
+    font = pygame.font.SysFont('Consolas', 30)
+    text = "Dive" 
     def gridHelp(window,WINDOW_WIDTH, WINDOW_HEIGHT):#just the grid as always
         spacer = 10
         font = pygame.font.SysFont('Consolas', 10)
@@ -27,15 +33,37 @@ def output(window):
         dock.draw(window)
         hut.draw(window)
         sign.draw(window)
+        objects.text.blit_text(window,text,(20,310,),font)
+        player.draw(window)
+        btn_exit.draw(window)
+        btn_back.draw(window)
+        if player.rect.x > 210:
+            shop_open.draw(window)
+        
+        
+        
     while run == True:
         display()
-       
-       
-        for event in pygame.event.get(): 
+        player.key_press() 
+        if pygame.sprite.collide_mask(player, hut):
+            player.back()
+            run = False
+            manager.level = 4
+        if player.rect.x < sign.rect.x:
+            player.back()
+            run = False
+            manager.level= 3
+        for event in pygame.event.get():
             
-        
-          
+            display()
             
+            if btn_exit.update(pygame.mouse.get_pos(),event):
+                run = False
+            
+            if btn_back.update(pygame.mouse.get_pos(),event):
+                run = False
+                manager.level = 0
+           
                 
             if event.type == pygame.QUIT: #Quits
                             pygame.quit()

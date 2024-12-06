@@ -10,7 +10,7 @@ import objects.buttons
 
 def output(window): 
     font = pygame.font.SysFont('Consoles',35)  
-    bg= objects.images.animated(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"iamges/gamebg.jpg")  #images in objects 
+    bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/underwater.png")  #images in objects 
     btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
     btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
     run = True
