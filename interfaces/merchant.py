@@ -14,7 +14,7 @@ def output(window):
     text = "Hey! Welcome \nto my shop!" 
     merchant = objects.images.still(0,0,500,500,"images/merchant.png")
     bubble = objects.images.still(-30,-10,360,180,"images/bubbly.png")
-    money_display = "0"
+    money_display = f"{manager.money}"
     def gridHelp(window,WINDOW_WIDTH, WINDOW_HEIGHT):#just the grid as always
         spacer = 10
         font = pygame.font.SysFont('Consolas', 10)

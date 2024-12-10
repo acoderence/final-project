@@ -9,9 +9,9 @@ def output(window):
     btn_back = objects.buttons.with_images(370, 10, 80,80,"images/back.png", "images/back(2).png")
     money = "0"
     font = pygame.font.SysFont('Consolas', 25)
-    btn_buy1 = objects.buttons.with_images(40, 100, 180,120,"images/buy_1.png", "images/buy_2.png")
-    btn_buy2 = objects.buttons.with_images(40, 200, 180,120,"images/buy_1.png", "images/buy_2.png")
-    btn_buy3 = objects.buttons.with_images(40, 390, 180,120,"images/buy_1.png", "images/buy_2.png")
+    btn_buy1 = objects.buttons.with_images(40, 100, 180,120,"images/upgrade_1.png", "images/upgrade_2.png")
+    btn_buy2 = objects.buttons.with_images(40, 200, 180,120,"images/upgrade_1.png", "images/upgrade_2.png")
+    btn_buy3 = objects.buttons.with_images(40, 390, 180,120,"images/upgrade_1.png", "images/upgrade_2.png")
     def gridHelp(window,WINDOW_WIDTH, WINDOW_HEIGHT):#just the grid as always
         spacer = 10
         font = pygame.font.SysFont('Consolas', 10)

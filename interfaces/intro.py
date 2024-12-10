@@ -48,7 +48,7 @@ def output(window):
         if pygame.sprite.collide_mask(player, hut):
             player.back()
             run = False
-            manager.level = 4
+            manager.level = 5
         if player.rect.x < sign.rect.x:
             player.back()
             run = False

@@ -84,7 +84,7 @@ def output(window):
                         message = "username or password is incorrect"
                     elif len(check) >= 1:
                         run = False
-                        manager.level = 3
+                        manager.level = 4
             if btn_help.update(pygame.mouse.get_pos(),event):
                 run = False
                 manager.level = 1

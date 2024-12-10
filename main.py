@@ -4,7 +4,8 @@
 
 
 import interfaces.game
-import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits, interfaces.merchant
+import interfaces.game_over
+import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits, interfaces.merchant, interfaces.buy,interfaces.intro
 pygame.init()
 
 
@@ -16,13 +17,28 @@ pygame.display.set_caption("Deep Sea Divers")
 while True:
   if manager.level == 0:
     interfaces.title.output(window)
+
   elif manager.level == 1:
     interfaces.help.output(window)
+
   elif manager.level == 2:
     interfaces.credits.output(window)
+
   elif manager.level == 3:
     interfaces.game.output(window)
+
   elif manager.level == 4:
+    interfaces.intro.output(window)
+
+  elif manager.level == 5:
     interfaces.merchant.output(window)
+  
+  elif manager.level == 6:
+    interfaces.buy.output(window)
+
+  elif manager.level == 7:
+    interfaces.game_over.output(window)
+
+  
   
     
