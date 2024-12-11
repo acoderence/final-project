@@ -8,6 +8,7 @@ import objects.enemy
 treasures=[]
 
 
+
 def output(window): 
     enemy_health = 3
     font = pygame.font.SysFont('Consoles',35)  
@@ -28,7 +29,8 @@ def output(window):
     treasures.append(objects.movable.movable(150,300,50,50,"images/emerald.png",2))
     treasures.append(objects.movable.movable(90,60,50,50,"images/diamond.png",2))
     treasures.append(objects.movable.movable(250,100,50,50,"images/gem(1).png",2))
-    seaweed= objects.images.animated(40,400,40,40,"images/kelp(2).gif",60)
+    seaweed=objects.images.animated(40,400,60,60,"images/kelp(2).gif",60)
+    seaweedtwo=objects.images.animated(440,400,60,60,"images/kelp(2).gif",60)
     #scissors= objects.images.still()
     
     
@@ -53,7 +55,12 @@ def output(window):
         bg.draw(window)
         btn_back.draw(window)
         btn_exit.draw(window)
+        seaweedtwo.draw(window)
+        seaweedtwo.update()
+        
+    for player in diver:
         diver.draw(window)
+        player.movement()
         diver.update()
         seaweed.draw(window)
         seaweed.update()
