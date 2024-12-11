@@ -5,7 +5,7 @@ import objects.enemy
 import objects.buttons
 import objects.enemy 
 
-treasure=[]
+treasures=[]
 
 
 def output(window): 
@@ -18,19 +18,19 @@ def output(window):
     diver=objects.images.animated(0,0,100,100,"images/diver.gif",5)
     btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
     btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
-    treasure.append(objects.movable.movable(200, 220,150,150,"images/yellowclam.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/redgem.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/purplegem.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/pinkclam.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/necklaceone.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/magiclam.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/pearls.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/emerald.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/diamond.png",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/",2))
-    treasure.append(objects.movable.movable(0,0,0,0,"images/",2))
+    treasures.append(objects.movable.movable(200, 220,50,50,"images/yellowclam.png",2))
+    treasures.append(objects.movable.movable(100,100,50,50,"images/redgem.png",2))
+    treasures.append(objects.movable.movable(10,40,50,50,"images/purplegem.png",2))
+    treasures.append(objects.movable.movable(0,0,50,50,"images/pinkclam.png",2))
+    treasures.append(objects.movable.movable(0,0,50,50,"images/necklaceone.png",2))
+    treasures.append(objects.movable.movable(0,0,50,50,"images/magiclam.png",2))
+    treasures.append(objects.movable.movable(0,0,50,50,"images/pearls.png",2))
+    treasures.append(objects.movable.movable(150,300,50,50,"images/emerald.png",2))
+    treasures.append(objects.movable.movable(90,60,50,50,"images/diamond.png",2))
+    treasures.append(objects.movable.movable(250,100,50,50,"images/gem(1).png",2))
+    seaweed= objects.images.animated(40,400,40,40,"images/kelp(2).gif",60)
+    #scissors= objects.images.still()
+    
     
     run = True
     pygame.display.set_caption("GAME")
@@ -49,13 +49,17 @@ def output(window):
 
 
     while run:
-        left = False
-        right = True
         window.fill((255,255,255))
         bg.draw(window)
         btn_back.draw(window)
         btn_exit.draw(window)
         diver.draw(window)
+        diver.update()
+        seaweed.draw(window)
+        seaweed.update()
+        for treasure in treasures:
+            treasure.draw(window)
+        
         for x in enemies:
                 x.draw(window)
                 x.swim()

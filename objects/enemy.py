@@ -24,5 +24,5 @@ class moving(objects.images.still):
     
         if pygame.sprite.collide_mask(self, diver):
             diver_health -= 1
-    # Don't know how to do this yet, also not sure whether or not def attack will also take damage off of enemy or if we need a separate def
+    
     

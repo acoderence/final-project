@@ -16,6 +16,7 @@ class move(objects.images.still): ##check
         self.movey = (key_input[pygame.K_UP] *-self.speed) + (key_input[pygame.K_DOWN] * self.speed) 
         self.rect.x+= self.movex
         self.rect.y+= self.movey
+        
          
          
   

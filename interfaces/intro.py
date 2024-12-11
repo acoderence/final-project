@@ -45,6 +45,9 @@ def output(window):
     while run == True:
         display()
         player.key_press() 
+        
+        key_input = pygame.key.get_pressed()
+        
         if pygame.sprite.collide_mask(player, hut):
             player.back()
             run = False
@@ -56,6 +59,10 @@ def output(window):
         for event in pygame.event.get():
             
             display()
+            if key_input == pygame.K_UP:
+                 pass
+            if key_input == pygame.K_DOWN:
+                 pass
             
             if btn_exit.update(pygame.mouse.get_pos(),event):
                 run = False

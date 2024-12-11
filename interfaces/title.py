@@ -1,4 +1,4 @@
-import pygame, sys, manager, objects.images, objects.buttons, sqlite3, objects.data_stuff, objects.text
+import pygame, sys, manager, objects.images, objects.buttons, sqlite3, objects.data_stuff, objects.text, objects.search
 
 
 def output(window): 
@@ -15,10 +15,10 @@ def output(window):
     txt_user = objects.text.input(170,170, 150,50,'Consolas',20,(0,0,0), (61, 132, 209))
     txt_pass = objects.text.input(170,250, 150,50,'Consolas',20,(0,0,0), (61, 132, 209))
     
-    connection = objects.data_stuff.create_connection('mov_dbase.db')
+    connection = objects.data_stuff.create_connection('u_account.db')
     
     if connection is not None: #checks that there is a connection
-        objects.data_stuff.create_table(connection,"movies",["username TEXT","password TEXT",])#createsthe table if there is a connection
+        objects.data_stuff.create_table(connection,"account",["username TEXT","password TEXT", "money TEXT", "bag_level TEXT", "tank_level TEXT", "weapon_level TEXT"])#createsthe table if there is a connection
     else: #error checking
         print("Error! cannot create the database connection.")
         
@@ -62,10 +62,9 @@ def output(window):
             pass_text = txt_pass.text.lower()
           
             if btn_play.update(pygame.mouse.get_pos(),event):
-                checker = False
                 string = ""
                 check = ""
-                result = objects.data_stuff.select_db(connection,"movies",[f"username ='{str(user_text)}'",f"password='{str(pass_text)}'"]).fetchall() 
+                result = objects.data_stuff.select_db(connection,"account",[f"username ='{str(user_text)}'",f"password='{str(pass_text)}'"]).fetchall() 
                 for i in result:
                     words = f"\n{i}"
                     comma =" , "#this separates each number so that it looks cleaner
@@ -73,7 +72,7 @@ def output(window):
                     string += str(words)#adds each total
                     check = string[3:]#this removes the fist comma and its spaces because we don't need one at the beginning before the first value 
                 #checks that string is working
-                print(check)
+                
                 
                 if user_text == "":
                     message = "please fill out this field"
@@ -92,15 +91,31 @@ def output(window):
                 run = False
                 manager.level = 2
             
-            if btn_new.update(pygame.mouse.get_pos(),event):
+            if btn_new.update(pygame.mouse.get_pos(),event): 
+                checker = False
                 
+                
+                result = objects.data_stuff.select_db(connection,"account",[f"username ='{str(user_text)}'",f"password='{str(pass_text)}'"]).fetchall()
+                
+                if len(result) > 0:
+                    checker = True
+                
+                
+                
+
                 if user_text == "":
                     message = "please fill out this field"
                 elif pass_text == "":
                     message = "please fill out this field"
-                else:
-                    objects.data_stuff.insert_db(connection,"movies",["username","password",],[f"{user_text}",f"{pass_text}"])
-            
+                elif len(user_text) < 4:
+                    message = "Username must have 4 or more characters"
+                elif len(pass_text) < 4:
+                    message = "please mmust have 4 or more characters"
+                elif checker == True:
+                    message = "That account already exists"
+                elif checker ==  False:
+                    objects.data_stuff.insert_db(connection,"account",["username","password", "money","bag_level","tank_level", "weapon_level"],[f"{user_text}",f"{pass_text}","0","1","1","1"])
+                    message = "new account made"
             if btn_exit.update(pygame.mouse.get_pos(),event):
                 run = False
                 
