@@ -100,9 +100,6 @@ def output(window):
                 if len(result) > 0:
                     checker = True
                 
-                
-                
-
                 if user_text == "":
                     message = "please fill out this field"
                 elif pass_text == "":

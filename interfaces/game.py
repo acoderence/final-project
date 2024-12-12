@@ -22,15 +22,16 @@ def output(window):
     treasures.append(objects.movable.movable(200, 220,50,50,"images/yellowclam.png",2))
     treasures.append(objects.movable.movable(100,100,50,50,"images/redgem.png",2))
     treasures.append(objects.movable.movable(10,40,50,50,"images/purplegem.png",2))
-    treasures.append(objects.movable.movable(0,0,50,50,"images/pinkclam.png",2))
-    treasures.append(objects.movable.movable(0,0,50,50,"images/necklaceone.png",2))
-    treasures.append(objects.movable.movable(0,0,50,50,"images/magiclam.png",2))
-    treasures.append(objects.movable.movable(0,0,50,50,"images/pearls.png",2))
+    treasures.append(objects.movable.movable(200,300,50,50,"images/pinkclam.png",2))
+    treasures.append(objects.movable.movable(75,70,50,50,"images/necklaceone.png",2))
+    treasures.append(objects.movable.movable(145,40,50,50,"images/magiclam.png",2))
+    treasures.append(objects.movable.movable(100,400,50,50,"images/pearls.png",2))
     treasures.append(objects.movable.movable(150,300,50,50,"images/emerald.png",2))
     treasures.append(objects.movable.movable(90,60,50,50,"images/diamond.png",2))
     treasures.append(objects.movable.movable(250,100,50,50,"images/gem(1).png",2))
     seaweed=objects.images.animated(40,400,60,60,"images/kelp(2).gif",60)
     seaweedtwo=objects.images.animated(440,400,60,60,"images/kelp(2).gif",60)
+    btn_collect= objects.buttons.with_images(450, 10, 40,40,"images/collect(1).png", "images/collect(2).png") ###look over
     #scissors= objects.images.still()
     
     
@@ -44,7 +45,7 @@ def output(window):
             enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5))
             x+=1
             
-                
+             
         
     
 
@@ -55,18 +56,25 @@ def output(window):
         bg.draw(window)
         btn_back.draw(window)
         btn_exit.draw(window)
+        btn_collect.draw(window)
         seaweedtwo.draw(window)
         seaweedtwo.update()
         
-    for player in diver:
+        
         diver.draw(window)
-        player.movement()
+         
         diver.update()
         seaweed.draw(window)
         seaweed.update()
         for treasure in treasures:
             treasure.draw(window)
-        
+            for treasure in treasures:
+                if pygame.sprite.collide_mask(diver, treasure):
+                    treasures.remove(treasure)#remove treasure off the screen
+            
+            
+       
+            
         for x in enemies:
                 x.draw(window)
                 x.swim()
@@ -81,16 +89,17 @@ def output(window):
        
        
         for event in pygame.event.get(): 
-           if btn_back.update(pygame.mouse.get_pos(),event):
+
+            if btn_back.update(pygame.mouse.get_pos(),event):
                 manager.level=0
                 run=False #should not run or continue
-           if btn_exit.update(pygame.mouse.get_pos(),event):
-               sys.exit()
-           
-           
-           if event.type == pygame.QUIT: #Quits
+            if btn_exit.update(pygame.mouse.get_pos(),event):
+                sys.exit()
+            
+            
+            if event.type == pygame.QUIT: #Quits
                             pygame.quit()
                             sys.exit()
-              
+                
         pygame.display.update() #update the display
         manager.fpsClock.tick(manager.fps) #speed of redraw

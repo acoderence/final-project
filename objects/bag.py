@@ -11,9 +11,9 @@ def storage (treasure,num):
     if num == 2:
         max = 15
     
-    if inventory < max:
+    if len(inventory) < int(max):
         inventory.append  (treasure)
-    elif inventory >= max:
+    elif len(inventory) >= int(max):
         warn = "Bag is full!"
     
     

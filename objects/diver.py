@@ -30,9 +30,7 @@ class move(objects.images.still): ##check
     
 
 
-    def display():
-        global oxygen
-        window.fill()
+   
 
     def health(self):
         #health bar and oxygen combined
@@ -43,23 +41,23 @@ class move(objects.images.still): ##check
          
 
     diver.key_press()
-    display()
-
+   
 
     def borders(self):
+        pass #the if statments below were erroring so I tried to tab them into the borders def but then the diver variable couldn't be recognized so I just made it pass so it wouldn't error
             #borders for diver
     if diver.rect.x<0:
          diver.rect.x=0
-         display()
+         #display()
     if diver.rect.y<0:
         diver.rect.y=0
-        display()
+        #display()
     elif diver.rect.x>400:
          diver.rect.x=400
-         display()
+        # display()
     elif diver.rect.y>400:
          diver.rect.y>400
-         display()
+        # display()
 
     def attacks(self):
-        
+       pass
