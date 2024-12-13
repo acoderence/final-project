@@ -4,19 +4,32 @@ import objects.movable
 import objects.enemy 
 import objects.buttons
 import objects.enemy 
-
+import objects.bag
+import objects.data_stuff
+import objects.txt_files
 treasures=[]
 
-
+inventory = []
 
 def output(window): 
     enemy_health = 3
+    connection = objects.data_stuff.create_connection('u_account.db')
+    result = objects.data_stuff.select_db(connection,"account",[f"username ='test'",f"password='test'"]).fetchall() 
+    print(result)
+    for i in result:
+        bag_level = int(i[4])
+        tank_level = int(i[5])
+        weapon_level = int(i[6])
+    
+    max = 5+(int(bag_level) * 5 )
+    print(bag_level, tank_level, weapon_level)
     font = pygame.font.SysFont('Consoles',35)  
+    bag_display = "0/10"
     bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/underwater.png")  #images in objects 
     wall = []
     wall.append(objects.images.still(0,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
     wall.append(objects.images.still(500,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
-    diver=objects.images.animated(0,0,100,100,"images/diver.gif",5)
+    diver=objects.movable.movable(0,0,100,100,"images/diver.gif",5)
     btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
     btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
     treasures.append(objects.movable.movable(200, 220,50,50,"images/yellowclam.png",2))
@@ -52,6 +65,8 @@ def output(window):
 
 
     while run:
+        
+        diver.key_press()
         window.fill((255,255,255))
         bg.draw(window)
         btn_back.draw(window)
@@ -63,7 +78,7 @@ def output(window):
         
         diver.draw(window)
          
-        diver.update()
+        #diver.update() #I didn't know how to make movement work so I just changed it to objects.movable.movable so that he could move so he could collect treasure so I could test the bag. We can fix it later.
         seaweed.draw(window)
         seaweed.update()
         for treasure in treasures:
@@ -71,7 +86,11 @@ def output(window):
             for treasure in treasures:
                 if pygame.sprite.collide_mask(diver, treasure):
                     treasures.remove(treasure)#remove treasure off the screen
-            
+                    inventory.append(85)#append each treasuere as value into list
+                    if len(inventory) < int(max):
+                        inventory.append  (treasure)   
+                    elif len(inventory) >= int(max):
+                            warn = "Bag is full"
             
        
             
@@ -84,14 +103,10 @@ def output(window):
                     
             
         
-        
-       
-       
-       
         for event in pygame.event.get(): 
-
+            
             if btn_back.update(pygame.mouse.get_pos(),event):
-                manager.level=0
+                manager.level=4
                 run=False #should not run or continue
             if btn_exit.update(pygame.mouse.get_pos(),event):
                 sys.exit()

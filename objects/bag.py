@@ -5,16 +5,15 @@ import pygame, sys
 # the num/upgrade the max increases (we only have the base and first upgrade but until we make sure this works lets not add more)
 def storage (treasure,num):
     inventory = []
+    done = 0
     #bag 1
-    if num == 1:
-        max = 10
-    if num == 2:
-        max = 15
+    max = 5+(int(num) * 5 )
     
     if len(inventory) < int(max):
         inventory.append  (treasure)
+        done = 1
     elif len(inventory) >= int(max):
-        warn = "Bag is full!"
+        done= -1
     
     
     

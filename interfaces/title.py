@@ -1,4 +1,4 @@
-import pygame, sys, manager, objects.images, objects.buttons, sqlite3, objects.data_stuff, objects.text, objects.search
+import pygame, sys, manager, objects.images, objects.buttons, sqlite3, objects.data_stuff, objects.text, objects.search, objects.txt_files
 
 
 def output(window): 
@@ -52,7 +52,7 @@ def output(window):
 
     while run == True:
         display()
-       
+        
        
         for event in pygame.event.get(): 
             
@@ -60,7 +60,7 @@ def output(window):
             txt_pass.update(pygame.mouse.get_pos(),event) 
             user_text = txt_user.text.lower()
             pass_text = txt_pass.text.lower()
-          
+            
             if btn_play.update(pygame.mouse.get_pos(),event):
                 string = ""
                 check = ""
@@ -71,7 +71,7 @@ def output(window):
                     string += comma#adds commas
                     string += str(words)#adds each total
                     check = string[3:]#this removes the fist comma and its spaces because we don't need one at the beginning before the first value 
-                #checks that string is working
+                    
                 
                 
                 if user_text == "":
@@ -84,6 +84,8 @@ def output(window):
                     elif len(check) >= 1:
                         run = False
                         manager.level = 4
+                        
+                        
             if btn_help.update(pygame.mouse.get_pos(),event):
                 run = False
                 manager.level = 1
