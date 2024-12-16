@@ -4,19 +4,30 @@ import objects.movable
 import objects.enemy 
 import objects.buttons
 import objects.enemy 
-
+import objects.data_stuff
+import objects.diver
 treasures=[]
-
+inventory=[]
 
 
 def output(window): 
     enemy_health = 3
     font = pygame.font.SysFont('Consoles',35)  
+    connection = objects.data_stuff.create_connection('player_account.db')
+    result = objects.data_stuff.select_db(connection,"player_account",[f"username ='{manager.account_user}'",f"password='{manager.account_pass}'"]).fetchall() 
+    for i in result:
+        bag_level = int(i[4])
+        tank_level = int(i[5])
+        weapon_level = int(i[6])
+        account_id = int(i[0])
+    max = 0+(int(bag_level) * 5 )
+    
+    warn = ""
     bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/underwater.png")  #images in objects 
     wall = []
     wall.append(objects.images.still(0,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
     wall.append(objects.images.still(500,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
-    diver=objects.images.animated(0,0,100,100,"images/diver.gif",5)
+    diver=objects.diver.move(0,0,100,100,"images/diver.gif",1,5)
     btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
     btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
     treasures.append(objects.movable.movable(200, 220,50,50,"images/yellowclam.png",2))
@@ -59,18 +70,35 @@ def output(window):
         btn_collect.draw(window)
         seaweedtwo.draw(window)
         seaweedtwo.update()
-        
-        
+        in_len = len(inventory)
+        bag_display = f"{in_len}/{max}"
+        objects.text.blit_text(window,bag_display,(10,10),font)
+        objects.text.blit_text(window,warn,(25,10),font)
         diver.draw(window)
-         
+        diver.movement()
         diver.update()
         seaweed.draw(window)
         seaweed.update()
         for treasure in treasures:
             treasure.draw(window)
             for treasure in treasures:
-                if pygame.sprite.collide_mask(diver, treasure):
-                    treasures.remove(treasure)#remove treasure off the screen
+                if pygame.sprite.collide_mask(diver, treasure):                         
+                    if len(inventory) <= int(max):#append each treasuere as value into list
+                        treasures.remove(treasure)#remove treasure off the screen   
+                        inventory.append(int(85))   
+                    elif len(inventory) > int(max):
+                            warn = "Bag is full"
+        sum_inventory= ""#sum inventory would be what get's added to the inventory section on account dtatabase
+        
+        for i in inventory:
+            quick_add = f"{sum_inventory}"
+            if quick_add == "":
+                quick_add = 0
+            i+=int(quick_add)
+            sum_inventory = f"{i}"
+        
+        
+        objects.data_stuff.update_db(connection,"player_account",[f"inventory='{sum_inventory}'"],f"id={int(account_id)}")
             
             
        

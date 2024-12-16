@@ -17,7 +17,7 @@ class gems(objects.images.still):
 
 
 #create treasure at random position
-    for in range(10):
+  for in range(10):
         treasure= treasure(random.randint)
         pass 
         

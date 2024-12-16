@@ -15,10 +15,10 @@ def output(window):
     txt_user = objects.text.input(170,170, 150,50,'Consolas',20,(0,0,0), (61, 132, 209))
     txt_pass = objects.text.input(170,250, 150,50,'Consolas',20,(0,0,0), (61, 132, 209))
     
-    connection = objects.data_stuff.create_connection('u_account.db')
+    connection = objects.data_stuff.create_connection('player_account.db')
     
     if connection is not None: #checks that there is a connection
-        objects.data_stuff.create_table(connection,"account",["username TEXT","password TEXT", "money TEXT", "bag_level TEXT", "tank_level TEXT", "weapon_level TEXT"])#createsthe table if there is a connection
+        objects.data_stuff.create_table(connection,"player_account",["username TEXT","password TEXT", "money TEXT", "bag_level TEXT", "tank_level TEXT", "weapon_level TEXT", "inventory TEXT"])#createsthe table if there is a connection
     else: #error checking
         print("Error! cannot create the database connection.")
         
@@ -64,7 +64,7 @@ def output(window):
             if btn_play.update(pygame.mouse.get_pos(),event):
                 string = ""
                 check = ""
-                result = objects.data_stuff.select_db(connection,"account",[f"username ='{str(user_text)}'",f"password='{str(pass_text)}'"]).fetchall() 
+                result = objects.data_stuff.select_db(connection,"player_account",[f"username ='{str(user_text)}'",f"password='{str(pass_text)}'"]).fetchall() 
                 for i in result:
                     words = f"\n{i}"
                     comma =" , "#this separates each number so that it looks cleaner
@@ -83,6 +83,8 @@ def output(window):
                         message = "username or password is incorrect"
                     elif len(check) >= 1:
                         run = False
+                        manager.account_user =f"{user_text}"
+                        manager.account_pass = f"{pass_text}"
                         manager.level = 4
             if btn_help.update(pygame.mouse.get_pos(),event):
                 run = False
@@ -95,7 +97,7 @@ def output(window):
                 checker = False
                 
                 
-                result = objects.data_stuff.select_db(connection,"account",[f"username ='{str(user_text)}'",f"password='{str(pass_text)}'"]).fetchall()
+                result = objects.data_stuff.select_db(connection,"player_account",[f"username ='{str(user_text)}'",f"password='{str(pass_text)}'"]).fetchall()
                 
                 if len(result) > 0:
                     checker = True
@@ -111,7 +113,7 @@ def output(window):
                 elif checker == True:
                     message = "That account already exists"
                 elif checker ==  False:
-                    objects.data_stuff.insert_db(connection,"account",["username","password", "money","bag_level","tank_level", "weapon_level"],[f"{user_text}",f"{pass_text}","0","1","1","1"])
+                    objects.data_stuff.insert_db(connection,"player_account",["username","password", "money","bag_level","tank_level", "weapon_level", "inventory"],[f"{user_text}",f"{pass_text}","0","1","1","1","0"])
                     message = "new account made"
             if btn_exit.update(pygame.mouse.get_pos(),event):
                 run = False

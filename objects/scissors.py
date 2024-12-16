@@ -13,9 +13,9 @@ class cut(objects.images.still): ##check
         super().__init__(x, y,width,height, image_to_use)
         self.speed = speed
         
-     attack_count=50       
+attack_count=50       
         
-    def hit():
+def hit():
         
          key_input = pygame.key.get_pressed()
 
