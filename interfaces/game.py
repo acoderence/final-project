@@ -12,6 +12,16 @@ inventory=[]
 
 def output(window): 
     enemy_health = 3
+    connection = objects.data_stuff.create_connection('u_account.db')
+    result = objects.data_stuff.select_db(connection,"account",[f"username ='test'",f"password='test'"]).fetchall() 
+    print(result)
+    for i in result:
+        bag_level = int(i[4])
+        tank_level = int(i[5])
+        weapon_level = int(i[6])
+    
+    max = 5+(int(bag_level) * 5 )
+    print(bag_level, tank_level, weapon_level)
     font = pygame.font.SysFont('Consoles',35)  
     connection = objects.data_stuff.create_connection('player_account.db')
     result = objects.data_stuff.select_db(connection,"player_account",[f"username ='{manager.account_user}'",f"password='{manager.account_pass}'"]).fetchall() 
@@ -63,6 +73,8 @@ def output(window):
 
 
     while run:
+        
+        diver.key_press()
         window.fill((255,255,255))
         bg.draw(window)
         btn_back.draw(window)
@@ -112,14 +124,10 @@ def output(window):
                     
             
         
-        
-       
-       
-       
         for event in pygame.event.get(): 
-
+            
             if btn_back.update(pygame.mouse.get_pos(),event):
-                manager.level=0
+                manager.level=4
                 run=False #should not run or continue
             if btn_exit.update(pygame.mouse.get_pos(),event):
                 sys.exit()
