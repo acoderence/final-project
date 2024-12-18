@@ -1,17 +1,40 @@
-import pygame, sys, manager, objects.buttons, objects.text
+import pygame, sys, manager, objects.buttons, objects.text, objects.data_stuff,objects.images
 
 
 
 def output(window): 
     
     run = True
+    connection = objects.data_stuff.create_connection('player_account.db')
+    result = objects.data_stuff.select_db(connection,"player_account",[f"username ='{manager.account_user}'",f"password='{manager.account_pass}'"]).fetchall() 
+    for i in result:
+        account_id = int(i[0])
+        account_money = int(i[3])
+        bag_level = int(i[4])
+        tank_level = int(i[5])
+        weapon_level = int(i[6])
+        
     btn_exit = objects.buttons.with_images(430,10,80,80,"images/exit.png", "images/exit(2).png")
     btn_back = objects.buttons.with_images(370, 10, 80,80,"images/back.png", "images/back(2).png")
-    money = "0"
+    money = f"{account_money}"
     font = pygame.font.SysFont('Consolas', 25)
-    btn_buy1 = objects.buttons.with_images(40, 100, 180,120,"images/upgrade_1.png", "images/upgrade_2.png")
-    btn_buy2 = objects.buttons.with_images(40, 200, 180,120,"images/upgrade_1.png", "images/upgrade_2.png")
-    btn_buy3 = objects.buttons.with_images(40, 390, 180,120,"images/upgrade_1.png", "images/upgrade_2.png")
+    font2 = pygame.font.SysFont('Consolas', 40)
+    ttl = objects.images.still(30,-20,180,160,"images/upgrades.png")
+    tank_price = 50+(int(tank_level)+100)
+    bag_price= 50+(int(bag_level)+100)
+    weapon_price= 50+(int(weapon_level)+100)
+    tank_display = f"${tank_price}"
+    bag_display = f"${bag_price}"
+    weapon_display = f"${weapon_price}"
+    tank_show =f"{tank_level}/5"
+    bag_show =f"{bag_level}/5"
+    weapon_show =f"{weapon_level}/5"
+    prices= "Price of \nUpgrade:"
+    level = "Current Level:"
+    your_money = "Your Money"
+    btn_buy1 = objects.buttons.with_background(20, 160, 150,60, "Montserrat", 40, (245, 138, 66), (245, 78, 66),(252, 252, 252),(204, 196, 196)," Tank")
+    btn_buy2 = objects.buttons.with_background(20, 260, 150,60, "Comfortaa", 40, (245, 138, 66), (245, 78, 66),(252, 252, 252),(204, 196, 196)," Bag")
+    btn_buy3 = objects.buttons.with_background(20, 360, 150,60, "Comfortaa", 40, (245, 138, 66), (245, 78, 66),(252, 252, 252),(204, 196, 196)," Scissors")
     def gridHelp(window,WINDOW_WIDTH, WINDOW_HEIGHT):#just the grid as always
         spacer = 10
         font = pygame.font.SysFont('Consolas', 10)
@@ -25,14 +48,29 @@ def output(window):
             pygame.draw.line(window,(255,0,0),(0,gridY),(WINDOW_WIDTH,gridY))
 
     def display():
-        window.fill((217, 186, 137))#tan backround. feels very shop-like idk
+        window.fill((217, 198, 167))#tan backround. feels very shop-like idk
         gridHelp(window,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT)#grid
         btn_exit.draw(window)
         btn_back.draw(window)
         btn_buy1.draw(window)
         btn_buy2.draw(window)
         btn_buy3.draw(window)
-        objects.text.blit_text(window,money,(340,350,),font)
+        #pplayers money gets diaplyed to see how much they have
+        objects.text.blit_text(window,money,(200,460,),font)
+        #prices title and your level tittle displayed (titled just so the player knows what they're looking at) also your money title
+        objects.text.blit_text(window,prices,(190, 90,),font)
+        objects.text.blit_text(window,level,(350, 90,),font)
+        objects.text.blit_text(window,your_money,(20, 460,),font)
+        #price of upgrade gets displayed
+        objects.text.blit_text(window,tank_display,(190, 160,),font)
+        objects.text.blit_text(window,bag_display,(190, 260,),font)
+        objects.text.blit_text(window,weapon_display,(190, 360,),font)
+        #shows current level of equiptment
+        objects.text.blit_text(window,tank_show,(350, 160,),font)
+        objects.text.blit_text(window,bag_show,(350, 260,),font)
+        objects.text.blit_text(window,weapon_show,(350, 360,),font)
+        ttl.draw(window)
+        
     while run == True:
         display()
        

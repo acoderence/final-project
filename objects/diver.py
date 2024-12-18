@@ -11,7 +11,6 @@ class move(objects.images.animated): ##check
  
  
     def movement(self):
-        #maybe shouldn't be here
         key_input = pygame.key.get_pressed()
         self.movex = (key_input[pygame.K_LEFT] *-self.speed) + (key_input[pygame.K_RIGHT] * self.speed)
         self.movey = (key_input[pygame.K_UP] *-self.speed) + (key_input[pygame.K_DOWN] * self.speed) 
@@ -20,16 +19,13 @@ class move(objects.images.animated): ##check
         self.rect.y+= self.movey
         
         
-        
-        
-         
-         
+    
   
      
      
-    #diver=(objects.movable.movable(200,380,100,100,"images/diver.gif",5)) #PLACE ON GAME SCREEN
-   
-     
+    
+    oxygen_timer=60
+    enemiess=[]
     oxygen=50
      
     
@@ -39,29 +35,29 @@ class move(objects.images.animated): ##check
 
     def health(self,window,oxygen):
         #health bar and oxygen combined
-        pygame.draw.rect(window, (255,255,255),(self.rect.x +20, self.rect.y+100,oxygen, 10))# creates health/oxygen bar under diver
-        if pygame.sprite.collide_mask(objects.enemy, self ): ###redo this
-          health=health-10
+        pygame.draw.rect(window, (99, 217, 15),(self.rect.x +20, self.rect.y+90,oxygen, 10))# creates health/oxygen bar under diver
+        #for x in enemies:
+        # if pygame.sprite.collide_mask(x , self): ###redo this
+          #oxygen=oxygen-10
       
          
 
-    #diver.key_press()
-   
+    
 
     def borders(self):
         pass #the if statments below were erroring so I tried to tab them into the borders def but then the diver variable couldn't be recognized so I just made it pass so it wouldn't error
             #borders for diver
         if self.rect.x<0:
            self.rect.x=0
-            #display()
+          
         if self.rect.y<0:
            self.rect.y=0
             #display()
-        elif self.rect.x>400:
+        if self.rect.x>400:
              self.rect.x=400
             # display()
-        elif self.rect.y>400:
-            self.rect.y>400
+        if self.rect.y>400:
+            self.rect.y=400
             # display()
 
     def attacks(self):

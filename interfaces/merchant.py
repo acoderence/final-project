@@ -4,7 +4,14 @@ import pygame, sys, manager, objects.images, objects.buttons, sqlite3, objects.d
 def output(window): 
     
     run = True
-    
+
+    connection = objects.data_stuff.create_connection('player_account.db')
+    result = objects.data_stuff.select_db(connection,"player_account",[f"username ='{manager.account_user}'",f"password='{manager.account_pass}'"]).fetchall() 
+    for i in result:
+        account_id = int(i[0])
+        account_inventory = int(i[7])
+        account_money = int(i[3])
+
     btn_exit = objects.buttons.with_images(430,10,80,80,"images/exit.png", "images/exit(2).png")
     btn_back = objects.buttons.with_images(370, 10, 80,80,"images/back.png", "images/back(2).png")
     btn_buy = objects.buttons.with_images(40, 390, 180,120,"images/buy_1.png", "images/buy_2.png")
@@ -14,7 +21,7 @@ def output(window):
     text = "Hey! Welcome \nto my shop!" 
     merchant = objects.images.still(0,0,500,500,"images/merchant.png")
     bubble = objects.images.still(-30,-10,360,180,"images/bubbly.png")
-    money_display = f"{manager.money}"
+    money_display = f"{account_money}"
     def gridHelp(window,WINDOW_WIDTH, WINDOW_HEIGHT):#just the grid as always
         spacer = 10
         font = pygame.font.SysFont('Consolas', 10)
@@ -59,7 +66,12 @@ def output(window):
                 run = False
                 manager.level = 6
             if btn_sell.update(pygame.mouse.get_pos(),event):
-                pass
+                if account_inventory > 0:
+                    money_add = account_money + account_inventory
+                    money_display = f"{money_add}"
+                    new_inventory = 0
+                    objects.data_stuff.update_db(connection,"player_account",[f"money='{money_add}'",f"inventory='{new_inventory}'"],f"id={int(account_id)}")
+                    print(result)
            
                 
             if event.type == pygame.QUIT: #Quits

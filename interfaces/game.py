@@ -6,22 +6,14 @@ import objects.buttons
 import objects.enemy 
 import objects.data_stuff
 import objects.diver
+import objects.treasure
 treasures=[]
 inventory=[]
+attack=[]
 
 
 def output(window): 
     enemy_health = 3
-    connection = objects.data_stuff.create_connection('u_account.db')
-    result = objects.data_stuff.select_db(connection,"account",[f"username ='test'",f"password='test'"]).fetchall() 
-    print(result)
-    for i in result:
-        bag_level = int(i[4])
-        tank_level = int(i[5])
-        weapon_level = int(i[6])
-    
-    max = 5+(int(bag_level) * 5 )
-    print(bag_level, tank_level, weapon_level)
     font = pygame.font.SysFont('Consoles',35)  
     connection = objects.data_stuff.create_connection('player_account.db')
     result = objects.data_stuff.select_db(connection,"player_account",[f"username ='{manager.account_user}'",f"password='{manager.account_pass}'"]).fetchall() 
@@ -30,6 +22,7 @@ def output(window):
         tank_level = int(i[5])
         weapon_level = int(i[6])
         account_id = int(i[0])
+        account_inventory = int(i[7])
     max = 0+(int(bag_level) * 5 )
     
     warn = ""
@@ -40,20 +33,20 @@ def output(window):
     diver=objects.diver.move(0,0,100,100,"images/diver.gif",1,5)
     btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
     btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
-    treasures.append(objects.movable.movable(200, 220,50,50,"images/yellowclam.png",2))
-    treasures.append(objects.movable.movable(100,100,50,50,"images/redgem.png",2))
-    treasures.append(objects.movable.movable(10,40,50,50,"images/purplegem.png",2))
-    treasures.append(objects.movable.movable(200,300,50,50,"images/pinkclam.png",2))
-    treasures.append(objects.movable.movable(75,70,50,50,"images/necklaceone.png",2))
-    treasures.append(objects.movable.movable(145,40,50,50,"images/magiclam.png",2))
-    treasures.append(objects.movable.movable(100,400,50,50,"images/pearls.png",2))
-    treasures.append(objects.movable.movable(150,300,50,50,"images/emerald.png",2))
-    treasures.append(objects.movable.movable(90,60,50,50,"images/diamond.png",2))
-    treasures.append(objects.movable.movable(250,100,50,50,"images/gem(1).png",2))
+    treasures.append(objects.treasure.gems(200, 220,50,50,"images/yellowclam.png",2))
+    treasures.append(objects.treasure.gems(100,100,50,50,"images/redgem.png",2))
+    treasures.append(objects.treasure.gems(10,40,50,50,"images/purplegem.png",2))
+    treasures.append(objects.treasure.gems(200,300,50,50,"images/pinkclam.png",2))
+    treasures.append(objects.treasure.gems(75,70,50,50,"images/necklaceone.png",2))
+    treasures.append(objects.treasure.gems(145,40,50,50,"images/magiclam.png",2))
+    treasures.append(objects.treasure.gems(100,400,50,50,"images/pearls.png",2))
+    treasures.append(objects.treasure.gems(150,300,50,50,"images/emerald.png",2))
+    treasures.append(objects.treasure.gems(90,60,50,50,"images/diamond.png",2))
+    treasures.append(objects.treasure.gems(250,100,50,50,"images/gem(1).png",2))
     seaweed=objects.images.animated(40,400,60,60,"images/kelp(2).gif",60)
     seaweedtwo=objects.images.animated(440,400,60,60,"images/kelp(2).gif",60)
     btn_collect= objects.buttons.with_images(450, 10, 40,40,"images/collect(1).png", "images/collect(2).png") ###look over
-    #scissors= objects.images.still()
+    
     
     
     run = True
@@ -66,15 +59,17 @@ def output(window):
             enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5))
             x+=1
             
-             
+    #def hit(self):
         
-    
+            
+        
+    attack_count=0
 
 
 
     while run:
-        
-        diver.key_press()
+        attack_count+=1
+      
         window.fill((255,255,255))
         bg.draw(window)
         btn_back.draw(window)
@@ -82,24 +77,41 @@ def output(window):
         btn_collect.draw(window)
         seaweedtwo.draw(window)
         seaweedtwo.update()
-        in_len = len(inventory)
+       
+        key_input = pygame.key.get_pressed()
+       #scissors being thrown by the diver...attacks enemy for sure but cuts seaweed maybe
+        if key_input[pygame.K_SPACE] and attack_count>50:
+            attack.append(objects.diver.move(diver.rect.x,diver.rect.y, 40, 40,"images/scissors.png",20,6))
+            attack_count=0   
+        
+        
+
+        in_len = len(inventory)-1
         bag_display = f"{in_len}/{max}"
+        if account_inventory > int(max):
+            bag_display=f"{max}/{max}"
         objects.text.blit_text(window,bag_display,(10,10),font)
-        objects.text.blit_text(window,warn,(25,10),font)
+        objects.text.blit_text(window,warn,(90,10),font)
+
         diver.draw(window)
         diver.movement()
         diver.update()
+        diver.borders()
+        diver.health(window,oxygen=50)
         seaweed.draw(window)
         seaweed.update()
         for treasure in treasures:
             treasure.draw(window)
             for treasure in treasures:
                 if pygame.sprite.collide_mask(diver, treasure):                         
-                    if len(inventory) <= int(max):#append each treasuere as value into list
-                        treasures.remove(treasure)#remove treasure off the screen   
-                        inventory.append(int(85))   
-                    elif len(inventory) > int(max):
-                            warn = "Bag is full"
+                    if account_inventory<= 0:                        
+                        if len(inventory) <= int(max):#append each treasuere as value into list
+                            treasures.remove(treasure)#remove treasure off the screen   
+                            inventory.append(int(10))   
+                        elif len(inventory) > int(max):
+                                warn = "Bag is full"
+                    else:
+                        warn="Bag is full"
         sum_inventory= ""#sum inventory would be what get's added to the inventory section on account dtatabase
         
         for i in inventory:
@@ -110,10 +122,11 @@ def output(window):
             sum_inventory = f"{i}"
         
         
-        objects.data_stuff.update_db(connection,"player_account",[f"inventory='{sum_inventory}'"],f"id={int(account_id)}")
+        if len(sum_inventory) >=1:
+            objects.data_stuff.update_db(connection,"player_account",[f"inventory='{sum_inventory}'"],f"id={int(account_id)}")
             
             
-       
+
             
         for x in enemies:
                 x.draw(window)

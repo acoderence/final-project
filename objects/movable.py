@@ -10,7 +10,8 @@ class movable(objects.images.still):
         key_input = pygame.key.get_pressed()
         self.movex = (key_input[pygame.K_LEFT] * -self.speed) + (key_input[pygame.K_RIGHT] * self.speed)
         self.movey = (key_input[pygame.K_UP] * -self.speed) + (key_input[pygame.K_DOWN] * self.speed)
-    
+        #self.movex = (key_input[pygame.K_SPACE] * -self.speed) + (key_input[pygame.K_SPACE] * self.speed)
+        
         self.rect.x += self.movex
         self.rect.y += self.movey
     
