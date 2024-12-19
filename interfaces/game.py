@@ -10,10 +10,11 @@ import objects.treasure
 treasures=[]
 inventory=[]
 attack=[]
+bubble=[]
 
 
 def output(window): 
-    enemy_health = 3
+    enemy_health = 5
     font = pygame.font.SysFont('Consoles',35)  
     connection = objects.data_stuff.create_connection('player_account.db')
     result = objects.data_stuff.select_db(connection,"player_account",[f"username ='{manager.account_user}'",f"password='{manager.account_pass}'"]).fetchall() 
@@ -26,6 +27,9 @@ def output(window):
     max = 0+(int(bag_level) * 5 )
     
     warn = ""
+
+    oxygen_count = 40 +(int(tank_level) * 15)
+
     bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/underwater.png")  #images in objects 
     wall = []
     wall.append(objects.images.still(0,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
@@ -46,7 +50,9 @@ def output(window):
     seaweed=objects.images.animated(40,400,60,60,"images/kelp(2).gif",60)
     seaweedtwo=objects.images.animated(440,400,60,60,"images/kelp(2).gif",60)
     btn_collect= objects.buttons.with_images(450, 10, 40,40,"images/collect(1).png", "images/collect(2).png") ###look over
+    bubble.append(objects.images.still(0, 0, 0,0 ,"images/airbubble.png"))
     
+    #bar = objects.movable.movable(diver.rect.x +20, diver.rect.y+90,oxygen_count, 10, "images/wall.png",1)
     
     
     run = True
@@ -64,27 +70,51 @@ def output(window):
             
         
     attack_count=0
-
+    oxygen=50
 
 
     while run:
+        bar = objects.movable.movable(diver.rect.x +20, diver.rect.y+90,oxygen_count, 10, "images/wall.png",1)
         attack_count+=1
-      
         window.fill((255,255,255))
         bg.draw(window)
+        #pygame.draw.rect(window, (99, 217, 15),(diver.rect.x +20, diver.rect.y+90,oxygen_count, 10))# creates health/oxygen bar under diver
+        bar.draw(window)
+
         btn_back.draw(window)
         btn_exit.draw(window)
+        bubble.draw(window)
         btn_collect.draw(window)
         seaweedtwo.draw(window)
         seaweedtwo.update()
+        oxygen_count = oxygen_count -1
+    
+        
        
         key_input = pygame.key.get_pressed()
        #scissors being thrown by the diver...attacks enemy for sure but cuts seaweed maybe
         if key_input[pygame.K_SPACE] and attack_count>50:
             attack.append(objects.diver.move(diver.rect.x,diver.rect.y, 40, 40,"images/scissors.png",20,6))
             attack_count=0   
+            
+            
+            
+                 #remove scissor
+        if len(attack)>0:
+            for slice in attack:
+               slice.rect.x-=2
+               if slice.rect.x < 0:
+                  attack.remove(slice)
+
+
+        attack_count=0
         
         
+        for slice in attack: #to kill enemy
+             for x in enemies:
+              if pygame.sprite.collide_mask(slice, x):  
+                   attack.remove(slice)
+                   enemies.remove(x)
 
         in_len = len(inventory)-1
         bag_display = f"{in_len}/{max}"
@@ -93,11 +123,23 @@ def output(window):
         objects.text.blit_text(window,bag_display,(10,10),font)
         objects.text.blit_text(window,warn,(90,10),font)
 
+
         diver.draw(window)
         diver.movement()
         diver.update()
         diver.borders()
-        diver.health(window,oxygen=50)
+        bar.key_press()
+
+        for x in enemies:
+            x.draw(window)
+            x.swim()
+            for i in wall:
+                if pygame.sprite.collide_mask(x, i):
+                    x.speed = -x.speed
+            if pygame.sprite.collide_mask(x, diver):
+                 oxygen_count = oxygen_count -5
+        
+        #diver.health(window, oxygen_count)
         seaweed.draw(window)
         seaweed.update()
         for treasure in treasures:
@@ -125,17 +167,9 @@ def output(window):
         if len(sum_inventory) >=1:
             objects.data_stuff.update_db(connection,"player_account",[f"inventory='{sum_inventory}'"],f"id={int(account_id)}")
             
-            
-
-            
-        for x in enemies:
-                x.draw(window)
-                x.swim()
-                for i in wall:
-                    if pygame.sprite.collide_mask(x, i):
-                        x.speed = -x.speed
-                    
-            
+        #if oxygen_count <= 0:
+             #manager.level = 7
+             #run = False
         
         for event in pygame.event.get(): 
             

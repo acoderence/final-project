@@ -16,20 +16,20 @@ class cut(objects.images.still): ##check
     
     
     
-    run = True   
-    while run: 
+    #run = True   
+    #while run: 
           #attack_count+=1
         
     
         
-     def hit(self):
+   #  def hit(self):
         
-         key_input = pygame.key.get_pressed()
+         #key_input = pygame.key.get_pressed()
        #scissors being thrown by the diver...attacks enemy for sure but cuts seaweed maybe
-         if key_input[pygame.K_SPACE] and attack_count>50:
-            attack.append(objects.diver.move(self.rect.x,self.rect.y, 40, 40,"images/scissors.png",20))
-            attack_count=0
-            pass
+         #if key_input[pygame.K_SPACE] and attack_count>50:
+            #attack.append(objects.diver.move(self.rect.x,self.rect.y, 40, 40,"images/scissors.png",20))
+            #attack_count=0
+            #pass
              
          
         

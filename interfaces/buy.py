@@ -20,9 +20,9 @@ def output(window):
     font = pygame.font.SysFont('Consolas', 25)
     font2 = pygame.font.SysFont('Consolas', 40)
     ttl = objects.images.still(30,-20,180,160,"images/upgrades.png")
-    tank_price = 50+(int(tank_level)+100)
-    bag_price= 50+(int(bag_level)+100)
-    weapon_price= 50+(int(weapon_level)+100)
+    tank_price = 50+(int(tank_level)*100)
+    bag_price= 50+(int(bag_level)*100)
+    weapon_price= 50+(int(weapon_level)*100)
     tank_display = f"${tank_price}"
     bag_display = f"${bag_price}"
     weapon_display = f"${weapon_price}"
@@ -77,11 +77,49 @@ def output(window):
        
         for event in pygame.event.get(): 
             if btn_buy1.update(pygame.mouse.get_pos(),event):
-                pass
+                if tank_level < 10:
+                    if account_money>tank_price:
+                        account_money-=tank_price
+                        tank_level += 1
+                        objects.data_stuff.update_db(connection,"player_account",[f"money='{account_money}'",f"tank_level='{tank_level}'"],f"id={int(account_id)}")
+                        money = f"{account_money}"
+                        tank_price = 50+(int(tank_level)*100)
+                        tank_display = f"${tank_price}"
+                        tank_show =f"{tank_level}/5"
+                        display()
+                        print(result)
+                        
             if btn_buy2.update(pygame.mouse.get_pos(),event):
-                pass
+                if bag_level < 5:
+                    if account_money>bag_price:
+                        account_money-=bag_price
+                        bag_level += 1
+                        objects.data_stuff.update_db(connection,"player_account",[f"money='{account_money}'",f"bag_level='{bag_level}'"],f"id={int(account_id)}")
+                        money = f"{account_money}"
+                        money = f"{account_money}"
+                        bag_price = 50+(int(bag_level)*100)
+                        bag_display = f"${bag_price}"
+                        bag_show =f"{bag_level}/5"
+                        display()
+                        print(result)
+                        
+                
+            
             if btn_buy3.update(pygame.mouse.get_pos(),event):
-                pass
+                if weapon_level < 5:
+                    if account_money>weapon_price:
+                        account_money-=weapon_price
+                        weapon_level += 1
+                        objects.data_stuff.update_db(connection,"player_account",[f"money='{account_money}'",f"weapon_level='{weapon_level}'"],f"id={int(account_id)}")
+                        money = f"{account_money}"
+                        money = f"{account_money}"
+                        weapon_price = 50+(int(weapon_level)*100)
+                        weapon_display = f"${weapon_price}"
+                        weapon_show =f"{weapon_level}/5"
+                        display()
+                        print(result)
+                        
+                
                     
             if btn_exit.update(pygame.mouse.get_pos(),event):
                 run = False

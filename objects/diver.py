@@ -4,6 +4,8 @@ import objects.images
 import manager
 import objects.movable
 
+enemies=[]
+
 class move(objects.images.animated): ##check
     def __init__(self, x, y,width,height,image_to_use,speed,update):
         super().__init__(x, y,width,height, image_to_use,update)
@@ -25,7 +27,7 @@ class move(objects.images.animated): ##check
      
     
     oxygen_timer=60
-    enemiess=[]
+   
     oxygen=50
      
     
@@ -33,12 +35,12 @@ class move(objects.images.animated): ##check
 
    
 
-    def health(self,window,oxygen):
+    #def health(self,window,oxygen):
         #health bar and oxygen combined
-        pygame.draw.rect(window, (99, 217, 15),(self.rect.x +20, self.rect.y+90,oxygen, 10))# creates health/oxygen bar under diver
+        #pygame.draw.rect(window, (99, 217, 15),(self.rect.x +20, self.rect.y+90,oxygen, 10))# creates health/oxygen bar under diver
         #for x in enemies:
-        # if pygame.sprite.collide_mask(x , self): ###redo this
-          #oxygen=oxygen-10
+         #if pygame.sprite.collide_mask(x , self): ###redo this
+           #oxygen=oxygen-10
       
          
 
