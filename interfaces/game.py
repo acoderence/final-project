@@ -106,7 +106,7 @@ def output(window):
         if key_input[pygame.K_SPACE] and attack_count>50:
             attack.append(objects.diver.move(diver.rect.x,diver.rect.y, 40, 40,"images/scissors.png",20))
             attack_count=0   
-            
+            # update it
             
             
                  #remove scissor
@@ -117,7 +117,7 @@ def output(window):
                   attack.remove(slice)
 
 
-        attack_count=0
+   
         
         
         for slice in attack: #to kill enemy
