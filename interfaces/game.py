@@ -6,6 +6,7 @@ import objects.buttons
 import objects.enemy 
 import objects.data_stuff
 import objects.diver
+import objects.scissors
 import objects.treasure
 treasures=[]
 inventory=[]
@@ -27,9 +28,13 @@ def output(window):
     max = 0+(int(bag_level) * 5 )
     
     warn = ""
-
+    
+    mathy = int(account_inventory)/85
+    invent_make = mathy-1
+    
+    ox_time = 0#trying to make the count down a little slower
     oxygen_count = 40 +(int(tank_level) * 15)
-
+    en_run =0# same  conept of the ox_time but for enemy attack.
     bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/underwater.png")  #images in objects 
     wall = []
     wall.append(objects.images.still(0,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
@@ -49,11 +54,12 @@ def output(window):
     treasures.append(objects.treasure.gems(250,100,50,50,"images/gem(1).png",2))
     seaweed=objects.images.animated(40,400,60,60,"images/kelp(2).gif",60)
     seaweedtwo=objects.images.animated(440,400,60,60,"images/kelp(2).gif",60)
-    btn_collect= objects.buttons.with_images(450, 10, 40,40,"images/collect(1).png", "images/collect(2).png") ###look over
-    bubble.append(objects.images.still(0, 0, 0,0 ,"images/airbubble.png"))
+    #btn_collect= objects.buttons.with_images(450, 10, 40,40,"images/collect(1).png", "images/collect(2).png") ###look over
+    bubble.append(objects.images.still(310,10,20,20,"images/airbubble.png"))
+    bubble.append(objects.images.still(340,10,20,20,"images/airbubbletwo.png"))
+    bubble.append(objects.images.still(370,10,20,20,"images/airbubblethree.png"))
     
-    #bar = objects.movable.movable(diver.rect.x +20, diver.rect.y+90,oxygen_count, 10, "images/wall.png",1)
-    
+   
     
     run = True
     pygame.display.set_caption("GAME")
@@ -64,37 +70,41 @@ def output(window):
     for y in range (2):
             enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5))
             x+=1
-            
-    #def hit(self):
-        
+           
             
         
     attack_count=0
     oxygen=50
-
+    
+    
 
     while run:
         bar = objects.movable.movable(diver.rect.x +20, diver.rect.y+90,oxygen_count, 10, "images/wall.png",1)
         attack_count+=1
         window.fill((255,255,255))
         bg.draw(window)
-        #pygame.draw.rect(window, (99, 217, 15),(diver.rect.x +20, diver.rect.y+90,oxygen_count, 10))# creates health/oxygen bar under diver
+      
         bar.draw(window)
 
         btn_back.draw(window)
         btn_exit.draw(window)
-        bubble.draw(window)
-        btn_collect.draw(window)
+        for bubbles in bubble: 
+          bubbles.draw(window)
+        #btn_collect.draw(window)
         seaweedtwo.draw(window)
         seaweedtwo.update()
-        oxygen_count = oxygen_count -1
+        #trying to make the timer slow down a little bit
+        ox_time = ox_time +1
+        if ox_time == 50:
+            ox_time = 0
+            oxygen_count = oxygen_count -1
     
         
        
         key_input = pygame.key.get_pressed()
        #scissors being thrown by the diver...attacks enemy for sure but cuts seaweed maybe
         if key_input[pygame.K_SPACE] and attack_count>50:
-            attack.append(objects.diver.move(diver.rect.x,diver.rect.y, 40, 40,"images/scissors.png",20,6))
+            attack.append(objects.diver.move(diver.rect.x,diver.rect.y, 40, 40,"images/scissors.png",20))
             attack_count=0   
             
             
@@ -115,10 +125,14 @@ def output(window):
               if pygame.sprite.collide_mask(slice, x):  
                    attack.remove(slice)
                    enemies.remove(x)
+                   
+        if invent_make> 0:
+            invent_make = invent_make -1
+            inventory.append(int(85)) 
 
         in_len = len(inventory)-1
         bag_display = f"{in_len}/{max}"
-        if account_inventory > int(max):
+        if mathy > int(max):
             bag_display=f"{max}/{max}"
         objects.text.blit_text(window,bag_display,(10,10),font)
         objects.text.blit_text(window,warn,(90,10),font)
@@ -129,6 +143,8 @@ def output(window):
         diver.update()
         diver.borders()
         bar.key_press()
+        
+        
 
         for x in enemies:
             x.draw(window)
@@ -137,7 +153,10 @@ def output(window):
                 if pygame.sprite.collide_mask(x, i):
                     x.speed = -x.speed
             if pygame.sprite.collide_mask(x, diver):
-                 oxygen_count = oxygen_count -5
+                en_run= en_run +1
+                if en_run == 30:#should hopefully slow down the enemy kill(used to kill too fast)
+                    oxygen_count = oxygen_count -3
+                    en_run = 0
         
         #diver.health(window, oxygen_count)
         seaweed.draw(window)
@@ -146,7 +165,7 @@ def output(window):
             treasure.draw(window)
             for treasure in treasures:
                 if pygame.sprite.collide_mask(diver, treasure):                         
-                    if account_inventory<= 0:                        
+                    if mathy<= int(max):                        
                         if len(inventory) <= int(max):#append each treasuere as value into list
                             treasures.remove(treasure)#remove treasure off the screen   
                             inventory.append(int(10))   
@@ -167,9 +186,7 @@ def output(window):
         if len(sum_inventory) >=1:
             objects.data_stuff.update_db(connection,"player_account",[f"inventory='{sum_inventory}'"],f"id={int(account_id)}")
             
-        #if oxygen_count <= 0:
-             #manager.level = 7
-             #run = False
+     
         
         for event in pygame.event.get(): 
             
