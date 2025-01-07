@@ -23,17 +23,7 @@ class move(objects.images.animated): ##check
         
     
   
-     
-     
-    
-    oxygen_timer=60
-   
-    oxygen=50
-     
-    
 
-
-   
 
     #def health(self,window,oxygen):
         #health bar and oxygen combined

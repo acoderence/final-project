@@ -10,7 +10,7 @@ pygame.init()
 
 
 
-window = pygame.display.set_mode((manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT), pygame.HWSURFACE)
+window = pygame.display.set_mode((manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT), pygame.HWSURFACE) 
 pygame.display.set_caption("Deep Sea Divers")
 
 

@@ -30,5 +30,3 @@ def collect(diver,treasure):
     if pygame.sprite.collide_mask(diver, treasure):
         bag.inventory.append(int(80))
         
-def draw():
-    pass
