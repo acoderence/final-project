@@ -42,7 +42,7 @@ def output(window):
     level = "Current Level:"
     your_money = "Your Money"
     #buy buttons
-    btn_buy1 = objects.buttons.with_background(20, 160, 150,60, "Montserrat", 40, (245, 138, 66), (245, 78, 66),(252, 252, 252),(204, 196, 196)," Tank")
+    btn_buy1 = objects.buttons.with_background(20, 160, 150,60, "Montserrat", 40, (245, 138, 66), (245, 78, 66),(252, 252, 252),(204, 196, 196)," Tank")# I treid to see if there were different fonts but I don't hink it worked. I think python just defaulted to a generic font for both cause it didn't recognize this one, but I don't really care so I'm leaving it
     btn_buy2 = objects.buttons.with_background(20, 260, 150,60, "Comfortaa", 40, (245, 138, 66), (245, 78, 66),(252, 252, 252),(204, 196, 196)," Bag")
     btn_buy3 = objects.buttons.with_background(20, 360, 150,60, "Comfortaa", 40, (245, 138, 66), (245, 78, 66),(252, 252, 252),(204, 196, 196)," Scissors")
     

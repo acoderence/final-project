@@ -40,13 +40,13 @@ class move(objects.images.animated): ##check
         pass #the if statments below were erroring so I tried to tab them into the borders def but then the diver variable couldn't be recognized so I just made it pass so it wouldn't error
             #borders for diver
         if self.rect.x<0:
-           self.rect.x=0
+          self.rect.x=0
           
         if self.rect.y<0:
            self.rect.y=0
             #display()
         if self.rect.x>400:
-             self.rect.x=400
+            self.rect.x=400
             # display()
         if self.rect.y>400:
             self.rect.y=400

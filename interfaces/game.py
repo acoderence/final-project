@@ -14,10 +14,10 @@ inventory=[]
 attack=[]
 bubble=[]
 scissors=[]
-
+ehealth =[]
 
 def output(window): 
-    enemy_health = 5
+    
     font = pygame.font.SysFont('Consoles',35)  
     #connects to database
     connection = objects.data_stuff.create_connection('player_account.db')
@@ -48,6 +48,7 @@ def output(window):
     wall = []
     wall.append(objects.images.still(0,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
     wall.append(objects.images.still(500,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
+    top_wall = objects.images.still(0,-2,500,10,"images/wall.png")
     diver=objects.diver.move(0,0,100,100,"images/diver.gif",1,5)
     btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
     btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
@@ -63,23 +64,25 @@ def output(window):
     treasures.append(objects.treasure.gems(250,100,50,50,"images/gem(1).png",2))
     seaweed=objects.images.animated(40,400,60,60,"images/kelp(2).gif",60)
     seaweedtwo=objects.images.animated(440,400,60,60,"images/kelp(2).gif",60)
-    bubble.append(objects.images.still(310,10,20,20,"images/airbubble.png"))
-    bubble.append(objects.images.still(340,10,20,20,"images/airbubbletwo.png"))
-    bubble.append(objects.images.still(370,10,20,20,"images/airbubblethree.png"))
+    #bubble.append(objects.images.still(310,10,20,20,"images/airbubble.png"))
+    #bubble.append(objects.images.still(340,10,20,20,"images/airbubbletwo.png"))
+    #bubble.append(objects.images.still(370,10,20,20,"images/airbubblethree.png"))
     
    
     
     run = True
     pygame.display.set_caption("GAME")
     
-    #code below generates two enemies and puts them in different locations compared to each other. Same location everygame though
-    enemies = []    
+    
+    enemies = [] # generates two enemies and puts them in different locations compared to each other. Same location every game though   
     x=0
     for y in range (2):
             enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5))
             x+=1
-           
-            
+    
+    for e in range (2):
+        ehealth.append(3)       
+               
         
     attack_count=0
     
@@ -91,7 +94,7 @@ def output(window):
         attack_count+=1
         window.fill((255,255,255))
         bg.draw(window)
-      
+        top_wall.draw(window)
         bar.draw(window)
  
         btn_back.draw(window)
@@ -136,10 +139,13 @@ def output(window):
         
         
         for scissor in scissors: #to kill enemy
-             for x in enemies:
-              if pygame.sprite.collide_mask(scissor, x):  
-                   scissors.remove(scissor)
-                   enemies.remove(x)
+             for x in enemies:#I'm hoping to give the enemies some lives, just so that they're more challenging, but I'm not sure how to make that work yet
+                if pygame.sprite.collide_mask(scissor, x): 
+                    scissors.remove(scissor)
+                    for e in ehealth:
+                        e = e-1 
+                        if e <= 0:
+                            enemies.remove(x)
         
         #code below is what makes sure that the player in-gmae inventory keeps the value the player had before they returned if they left with it partly filled.           
         if invent_make> 0:#it goes through that variable made and adds each value into the bag until it's at 0. If the player had nothing in it previously, than nothing happens
@@ -162,8 +168,14 @@ def output(window):
         bar.key_press()
      
                 
+        #so that the diver can resurface to sell and buy items
+        if diver.rect.x<0:   ##redo!!!
+         if diver.rect.x>500:
+            manager.level=4
+            run=False
+            
         
-
+            
         for x in enemies:#draws enemy and makes them move
             x.draw(window)
             x.swim()
@@ -184,25 +196,25 @@ def output(window):
             treasure.draw(window)
             for treasure in treasures:
                 if pygame.sprite.collide_mask(diver, treasure):                         
-                    if mathy<= int(max):                        
+                    if mathy<= int(max):  #if iventory is less than the max of bag capacity, makes it so that you can't collect more than the bag can hold                      
                         if len(inventory) <= int(max):#append each treasuere as value into list
                             treasures.remove(treasure)#remove treasure off the screen   
                             inventory.append(int(10))   
-                        elif len(inventory) > int(max):
+                        elif len(inventory) > int(max):#bag will be full, player can no longer collect
                                 warn = "Bag is full"
                     else:
-                        warn="Bag is full"
+                        warn="Bag is full"#there's two that make sure this text pops up becuase It's picky about showing up sometimes so this just makes sure that it does. 
         sum_inventory= ""#sum inventory would be what get's added to the inventory section on account dtatabase
         
-        for i in inventory:
+        for i in inventory: #creates the string that gets updated to database which will be the inventory. I also makes sure that if there is nothing, it will be added as zero
             quick_add = f"{sum_inventory}"
             if quick_add == "":
                 quick_add = 0
             i+=int(quick_add)
             sum_inventory = f"{i}"
+         
         
-        
-        if len(sum_inventory) >=1:
+        if len(sum_inventory) >=1:#updating invenotry in the database
             objects.data_stuff.update_db(connection,"player_account",[f"inventory='{sum_inventory}'"],f"id={int(account_id)}")
             
         
