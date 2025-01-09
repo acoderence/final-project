@@ -27,7 +27,7 @@ def output(window):
         
     def display():
         window.fill((94, 188, 224))#blue background to look like water hopefully
-        gridHelp(window,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT)#grid
+        #gridHelp(window,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT)#grid
         
         #draws title
         title_text.draw(window)

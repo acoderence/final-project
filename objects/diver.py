@@ -42,14 +42,14 @@ class move(objects.images.animated): ##check
         if self.rect.x<0:
           self.rect.x=0
           
-        if self.rect.y<0:
-           self.rect.y=0
+        if self.rect.y<-40:
+           self.rect.y=-40
             #display()
-        if self.rect.x>400:
-            self.rect.x=400
+        if self.rect.x>490:
+            self.rect.x=490
             # display()
-        if self.rect.y>400:
-            self.rect.y=400
+        if self.rect.y>490:
+            self.rect.y=490
             # display()
 
     def attacks(self):

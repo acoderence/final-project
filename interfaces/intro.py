@@ -36,7 +36,7 @@ def output(window):
         window.fill((255,255,255))#fills white window, pretty basic, it gets covered by an image anyways
         #background image
         beach.draw(window)
-        gridHelp(window,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT) #grid
+        #gridHelp(window,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT) #grid
         #draws images
         border.draw(window)
         dock.draw(window)

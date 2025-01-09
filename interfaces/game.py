@@ -14,10 +14,10 @@ inventory=[]
 attack=[]
 bubble=[]
 scissors=[]
-ehealth =[]
+
 
 def output(window): 
-    
+    global enemy_health
     font = pygame.font.SysFont('Consoles',35)  
     #connects to database
     connection = objects.data_stuff.create_connection('player_account.db')
@@ -32,6 +32,9 @@ def output(window):
         account_inventory = int(i[7])
     #max capacity for bag to carry, increases by bag level
     max = 0+(int(bag_level) * 5 )
+    
+    enemy__health = 80#enemy max health
+    enemy_damage = 8 * weapon_level#damage enemy takes from player, increases as weapon gets upgraded
     
     warn = ""#string that displays warning when bag is full, it is blank for now so that it doesn't display it all the time
     
@@ -48,44 +51,38 @@ def output(window):
     wall = []
     wall.append(objects.images.still(0,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
     wall.append(objects.images.still(500,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
-    top_wall = objects.images.still(0,-2,500,10,"images/wall.png")
+    top_wall = objects.images.still(0,-20,500,20,"images/wall.png")
     diver=objects.diver.move(0,0,100,100,"images/diver.gif",1,5)
     btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
     btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
-    treasures.append(objects.treasure.gems(200, 220,50,50,"images/yellowclam.png",2))
+    treasures.append(objects.treasure.gems(300, 220,50,50,"images/yellowclam.png",2))
     treasures.append(objects.treasure.gems(100,100,50,50,"images/redgem.png",2))
     treasures.append(objects.treasure.gems(10,40,50,50,"images/purplegem.png",2))
     treasures.append(objects.treasure.gems(200,300,50,50,"images/pinkclam.png",2))
-    treasures.append(objects.treasure.gems(75,70,50,50,"images/necklaceone.png",2))
-    treasures.append(objects.treasure.gems(145,40,50,50,"images/magiclam.png",2))
+    treasures.append(objects.treasure.gems(175,70,50,50,"images/necklaceone.png",2))
+    treasures.append(objects.treasure.gems(410,410,50,50,"images/magiclam.png",2))
     treasures.append(objects.treasure.gems(100,400,50,50,"images/pearls.png",2))
-    treasures.append(objects.treasure.gems(150,300,50,50,"images/emerald.png",2))
+    treasures.append(objects.treasure.gems(250,400,50,50,"images/emerald.png",2))
     treasures.append(objects.treasure.gems(90,60,50,50,"images/diamond.png",2))
     treasures.append(objects.treasure.gems(250,100,50,50,"images/gem(1).png",2))
     seaweed=objects.images.animated(40,400,60,60,"images/kelp(2).gif",60)
     seaweedtwo=objects.images.animated(440,400,60,60,"images/kelp(2).gif",60)
-    #bubble.append(objects.images.still(310,10,20,20,"images/airbubble.png"))
-    #bubble.append(objects.images.still(340,10,20,20,"images/airbubbletwo.png"))
-    #bubble.append(objects.images.still(370,10,20,20,"images/airbubblethree.png"))
-    
+    seaweedthree=objects.images.animated(300,450,60,60,"images/kelp(2).gif",60)
+   
    
     
     run = True
     pygame.display.set_caption("GAME")
     
-    
-    enemies = [] # generates two enemies and puts them in different locations compared to each other. Same location every game though   
-    x=0
+    enemies = []#enemy generation
+    x= 0
     for y in range (2):
-            enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5))
-            x+=1
-    
-    for e in range (2):
-        ehealth.append(3)       
+            enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5, enemy__health, enemy_damage))#damage increases as wepon upgrades
+            x+=1     
                
         
     attack_count=0
-    
+    enemy_health=50
     
     
 
@@ -94,28 +91,33 @@ def output(window):
         attack_count+=1
         window.fill((255,255,255))
         bg.draw(window)
-        top_wall.draw(window)
+        
         bar.draw(window)
  
         btn_back.draw(window)
         btn_exit.draw(window)
+        seaweedthree.draw(window)
+        seaweedthree.update()
+        top_wall.draw(window)
+        
         for bubbles in bubble: 
           bubbles.draw(window)
         for scissor in scissors:
             scissor.draw(window)
             
-        if oxygen_count<=-2:#changes screen if oxygen runs out (player dies)
+        if oxygen_count<= 1:#changes screen if oxygen runs out (player dies)
             manager.level=7
             run=False
             
-        #btn_collect.draw(window)
+        
         seaweedtwo.draw(window)
         seaweedtwo.update()
         #below code is trying to make the timer slow down a little. It uses two timers, once increases by the seconds, while one only decreases when the other hits a certain value. The one that increases gets reset once that value is reached
         ox_time = ox_time +1
         if ox_time == 65:
-            ox_time = 0
-            oxygen_count = oxygen_count -1
+            if oxygen_count >=2:#this also makes sure that bar can never be negative sizing
+                ox_time = 0
+                oxygen_count = oxygen_count -1
     
         
        
@@ -142,10 +144,9 @@ def output(window):
              for x in enemies:#I'm hoping to give the enemies some lives, just so that they're more challenging, but I'm not sure how to make that work yet
                 if pygame.sprite.collide_mask(scissor, x): 
                     scissors.remove(scissor)
-                    for e in ehealth:
-                        e = e-1 
-                        if e <= 0:
-                            enemies.remove(x)
+                    x.hurt()
+                    if x.health <=1:
+                        enemies.remove(x)
         
         #code below is what makes sure that the player in-gmae inventory keeps the value the player had before they returned if they left with it partly filled.           
         if invent_make> 0:#it goes through that variable made and adds each value into the bag until it's at 0. If the player had nothing in it previously, than nothing happens
@@ -168,17 +169,21 @@ def output(window):
         bar.key_press()
      
                 
+        
         #so that the diver can resurface to sell and buy items
-        if diver.rect.x<0:   ##redo!!!
-         if diver.rect.x>500:
-            manager.level=4
+        if pygame.sprite.collide_mask(top_wall,diver):
             run=False
+            manager.level=4
             
+         
+
+          
         
             
         for x in enemies:#draws enemy and makes them move
             x.draw(window)
             x.swim()
+            pygame.draw.rect(window, (0, 238, 0),(x.rect.x +20, x.rect.y+100, x.health, 10))  #i moved the bar down here, the enemy health bar, 
             for i in wall:#if they hit the wall they reverse
                 if pygame.sprite.collide_mask(x, i):
                     x.speed = -x.speed

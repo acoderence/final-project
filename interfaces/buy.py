@@ -60,7 +60,7 @@ def output(window):
 
     def display():
         window.fill((217, 198, 167))#tan backround. feels very shop-like idk
-        gridHelp(window,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT)#grid
+        #gridHelp(window,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT)#grid
         #buttons draws
         btn_exit.draw(window)
         btn_back.draw(window)
