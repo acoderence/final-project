@@ -1,6 +1,7 @@
 import pygame
 import objects.images 
 
+#this here is pretty much just like the normal moving file but the player can't go up or down. 
 class movable(objects.images.still):
     def __init__(self, x,y, width, height, images_to_use, speed):
         super().__init__( x,y, width, height, images_to_use)

@@ -33,7 +33,7 @@ def output(window):
     #max capacity for bag to carry, increases by bag level
     max = 0+(int(bag_level) * 5 )
     
-    enemy__health = 80#enemy max health
+    enemy_health = 80#enemy max health
     enemy_damage = 8 * weapon_level#damage enemy takes from player, increases as weapon gets upgraded
     
     warn = ""#string that displays warning when bag is full, it is blank for now so that it doesn't display it all the time
@@ -77,13 +77,13 @@ def output(window):
     enemies = []#enemy generation
     x= 0
     for y in range (2):
-            enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5, enemy__health, enemy_damage))#damage increases as wepon upgrades
+            enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5, enemy_health, enemy_damage))#damage increases as weapon upgrades
             x+=1     
                
         
     attack_count=0
-    enemy_health=50
-    
+  
+      
     
 
     while run:
@@ -105,9 +105,7 @@ def output(window):
         for scissor in scissors:
             scissor.draw(window)
             
-        if oxygen_count<= 1:#changes screen if oxygen runs out (player dies)
-            manager.level=7
-            run=False
+      
             
         
         seaweedtwo.draw(window)
@@ -119,7 +117,10 @@ def output(window):
                 ox_time = 0
                 oxygen_count = oxygen_count -1
     
-        
+    ##redoo!!
+        if oxygen_count<=2:#changes screen if oxygen runs out (player dies)
+            manager.level=7
+            run=False
        
         key_input = pygame.key.get_pressed()
        #scissors being thrown by the diver...attacks enemy for sure but cuts seaweed maybe

@@ -10,7 +10,8 @@ pygame.init()
 
     
 def output(window):
-    font = pygame.font.SysFont('Consoles',35)  
+    font = pygame.font.SysFont('Consoles',35) 
+    font2=pygame.font.SysFont('Consoles',25)  
     bg= objects.images.animated(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/creditbg(2).gif", 50)  #images in objects 
     btn_back=objects.buttons.with_images(400, 10, 40,40,"images/back.png", "images/back(2).png")
     btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
@@ -28,8 +29,9 @@ def output(window):
         btn_back.draw(window)
         btn_exit.draw(window)
         credits_msg="DEEP SEA DIVER\nDeveloped by: Abbigail Spence and Brianna Wright  \nSpecial Thanks:Markus Notch Perrson \nCopyright 2024 \nThank You For Playing"
-        objects.text.blit_text(window,credits_msg,(100,100),font,((255,255,255)))
-
+        links = "IMAGES: \nhttps://clipart.com/ -clipart\nhttps://www.freeimages.com/clipart -clipart\nhttps://www.textstudio.com/logo/graffiti-tag-text-102 -titles\nhttps://stock.adobe.com/ca -backgrounds"#these are just links to the sites where I got my images, 
+        objects.text.blit_text(window,credits_msg,(50,100),font,((255,255,255)))
+        objects.text.blit_text(window,links,(50,300),font2,((255,255,255)))
 
 
 
