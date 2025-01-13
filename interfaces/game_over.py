@@ -9,9 +9,9 @@ import objects.images
 
 def output(window): 
    bg=objects.images.animated(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/gameover.gif",40)
-   text= objects.images.animated(250,300,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/youdrowned.gif",40)
-   btn_exit= objects.buttons.with_images(450, 10, 40,40,"images/exit.png", "images/exit(2).png")
-   btn_retry=objects.buttons.with_images(150, 350, 40,40,"images/retry.png", "images/retry(2).png")
+   text= objects.images.animated(110,50,350,350,"images/youdrowned.gif",40)
+   btn_exit= objects.buttons.with_images(450, 10, 50,50,"images/exit.png", "images/exit(2).png")
+   btn_retry=objects.buttons.with_images(180, 180, 140,140,"images/retry.png", "images/retry(2).png")
    run = True
 
 

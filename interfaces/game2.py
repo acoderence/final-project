@@ -14,7 +14,7 @@ inventory=[]
 attack=[]
 bubble=[]
 scissors=[]
-
+chests = []
 
 def output(window): 
     global enemy_health
@@ -38,7 +38,7 @@ def output(window):
     
     warn = ""#string that displays warning when bag is full, it is blank for now so that it doesn't display it all the time
     
-    mathy = int(account_inventory)/10 #Treausre gets added by value, and for ease we have each value the same, which  is 85. This checks how much treasure the player has collected by dividing by value
+    mathy = int(account_inventory)/10 #Treausre gets added by value, and for ease we have each value the same, which  is 10. This checks how much treasure the player has collected by dividing by value
     invent_make = mathy-1 #invent make will be used later to add already existing treasure into the bag in case the player leaves the water before bag is full, they can come back and 
     #finsish filling from value they left off on
     
@@ -46,7 +46,7 @@ def output(window):
     oxygen_count = 40 +(int(tank_level) * 15)#oxygen count increases with tank level
     en_run =0# same  concept of the ox_time but for enemy attack health countdown.
     
-    bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/underwater.png")  #images in objects 
+    bg= objects.images.still(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/deep_water.png")  #images in objects 
     #walls below are needed as borders for enemies to bounce off of
     wall = []
     wall.append(objects.images.still(0,0,20,manager.WINDOW_HEIGHT, "images/wall.png"))
@@ -68,9 +68,13 @@ def output(window):
     seaweed=objects.images.animated(40,400,60,60,"images/kelp(2).gif",60)
     seaweedtwo=objects.images.animated(440,400,60,60,"images/kelp(2).gif",60)
     seaweedthree=objects.images.animated(300,450,60,60,"images/kelp(2).gif",60)
-    seasnake=objects.images.animated(400,430,70,70,"images/sea snake.gif",60)
-    crab=objects.images.animated(100,440,60,60,"images/small crab.gif",60)
-   
+    chests.append(objects.images.still(380,380, 100,100,"images/chest.png"))
+    treasures.append(objects.treasure.gems(400,400,50,50,"images/magiclam.png",2))
+    treasures.append(objects.treasure.gems(410,410,50,50,"images/pearls.png",2))
+    treasures.append(objects.treasure.gems(410,400,50,50,"images/emerald.png",2))
+    treasures.append(objects.treasure.gems(410,410,50,50,"images/diamond.png",2))
+    treasures.append(objects.treasure.gems(420,420,50,50,"images/gem(1).png",2))
+    chest_health = 3
    
     
     run = True
@@ -78,8 +82,8 @@ def output(window):
     
     enemies = []#enemy generation
     x= 0
-    for y in range (2):
-            enemies.append(objects.enemy.moving(70 +(x*100),150+(y*150),100,100,"images/fish_1.png",5, enemy_health, enemy_damage))#damage increases as weapon upgrades
+    for y in range (3):
+            enemies.append(objects.enemy.moving(30 +(x*100),120+(y*150),100,100,"images/fish_1.png",5, enemy_health, enemy_damage))#damage increases as weapon upgrades
             x+=1     
                
         
@@ -98,14 +102,11 @@ def output(window):
  
         btn_back.draw(window)
         btn_exit.draw(window)
-        seasnake.draw(window)
-        seasnake.update()
-        crab.draw(window)
-        crab.update()
         seaweedthree.draw(window)
         seaweedthree.update()
         top_wall.draw(window)
-        
+        for chest in chests:
+            chest.draw(window)
         for bubbles in bubble: 
           bubbles.draw(window)
         for scissor in scissors:
@@ -154,6 +155,13 @@ def output(window):
                     x.hurt()
                     if x.health <=1:
                         enemies.remove(x)
+             
+             for chest in chests:
+                 if pygame.sprite.collide_mask(scissor,chest):
+                     scissors.remove(scissor)
+                     chest_health = chest_health -1
+                     if chest_health <= 0:
+                         chests.remove(chest)
         
         #code below is what makes sure that the player in-gmae inventory keeps the value the player had before they returned if they left with it partly filled.           
         if invent_make> 0:#it goes through that variable made and adds each value into the bag until it's at 0. If the player had nothing in it previously, than nothing happens
@@ -161,15 +169,12 @@ def output(window):
             inventory.append(int(10)) 
 
         in_len = len(inventory)-1#I have to keep adding -1 to things becuase they always start at 0(they count 0 as 1 or soemthing), and then the numbers are never right 
-        if in_len == -1:#so it doesn't show a negative number hopefully
-            in_len = 0
         bag_display = f"{in_len}/{max}"#displays the bag inventory out of the max that the player can collect, which increases with the bag level
         if mathy > int(max): #If the bag is at mazimum capaxity, the invenotry fraction displays that the bag is full
             bag_display=f"{max}/{max}"
         #draws the inventory fraction and the warning of capacity    
         objects.text.blit_text(window,bag_display,(10,10),font)
         objects.text.blit_text(window,warn,(90,10),font)
-
 
         diver.draw(window)
         diver.movement()
@@ -178,17 +183,18 @@ def output(window):
         bar.key_press()
      
                 
-        
+        for chest in chests :  
+            if pygame.sprite.collide_mask(chest,diver):
+                diver.back()
+                
+                
         #so that the diver can resurface to sell and buy items
         if pygame.sprite.collide_mask(top_wall,diver):
             run=False
             manager.level=4
-            
-         
-
-          
         
-            
+        
+           
         for x in enemies:#draws enemy and makes them move
             x.draw(window)
             x.swim()
@@ -213,7 +219,7 @@ def output(window):
                     if mathy<= int(max):  #if iventory is less than the max of bag capacity, makes it so that you can't collect more than the bag can hold                      
                         if len(inventory) <= int(max):#append each treasuere as value into list
                             treasures.remove(treasure)#remove treasure off the screen   
-                            inventory.append(int(10))  #10 being price of individual treasure 
+                            inventory.append(int(10))   
                         elif len(inventory) > int(max):#bag will be full, player can no longer collect
                                 warn = "Bag is full"
                     else:
@@ -231,9 +237,7 @@ def output(window):
         if len(sum_inventory) >=1:#updating invenotry in the database
             objects.data_stuff.update_db(connection,"player_account",[f"inventory='{sum_inventory}'"],f"id={int(account_id)}")
             
-        if len(treasures) <= 0:
-            run = False
-            manager.level = 8
+        
         
         for event in pygame.event.get(): 
             

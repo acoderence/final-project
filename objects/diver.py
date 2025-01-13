@@ -23,7 +23,9 @@ class move(objects.images.animated): ##check
         
     
   
-
+    def back(self):
+        self.rect.x -= self.movex
+        self.rect.y -= self.movey
 
     #def health(self,window,oxygen):
         #health bar and oxygen combined
