@@ -217,7 +217,7 @@ def output(window):
                 if mathy<= int(max):  #if iventory is less than the max of bag capacity, makes it so that you can't collect more than the bag can hold                      
                     if len(inventory) <= int(max):#append each treasuere as value into list
                         treasures.remove(treasure)#remove treasure off the screen   
-                        inventory.append(int(5))  #45 being price of individual treasure 
+                        inventory.append(int(85))  #45 being price of individual treasure 
                     elif len(inventory) > int(max):#bag will be full, player can no longer collect
                             warn = "Bag is full"
                 else:
