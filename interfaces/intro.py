@@ -72,7 +72,7 @@ def output(window):
             
             display()
             if btn_exit.update(pygame.mouse.get_pos(),event):#exits
-                run = False
+                 sys.exit()
             
             if btn_back.update(pygame.mouse.get_pos(),event):#goes back
                 run = False

@@ -4,11 +4,13 @@ import pygame, sys, manager, objects.images, objects.buttons, sqlite3, objects.d
 def output(window):
     title_text = objects.images.still(20,20,450,150,"images/welcome.png") #this is an image of text pretty much, I got it from a graffiti generator, just so that it looked cooler
     message = "" #this would be where the user gets output from the game (like fill this out, username or password is incorrect, etc)
+    
+    fall=objects.images.animated(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/fallingfish.gif", 40)  
     font = pygame.font.SysFont('Consolas', 20)
     run = True
     #buttons
     btn_play = objects.buttons.with_images(150,310, 250, 150, "images/play_1.png", "images/play_2.png")
-    btn_exit = objects.buttons.with_images(420,10, 100, 50, "images/exit.png", "images/exit(2).png")
+    btn_exit = objects.buttons.with_images(420,10, 50, 50, "images/exit.png", "images/exit(2).png")
     btn_help = objects.buttons.with_images(300,400, 150, 100, "images/help_1.png", "images/help_2.png")
     btn_credit = objects.buttons.with_images(100,400, 150, 100, "images/credits_1.png", "images/credits_2.png")
     btn_new = objects.buttons.with_images(330,350, 100, 50, "images/New_1.png", "images/New_2.png")
@@ -42,6 +44,9 @@ def output(window):
         txt_user.draw(window)
         txt_pass.draw(window)
         
+       
+        fall.draw(window)
+        fall.update()
         #draws the game output (the message string)
         objects.text.blit_text(window,message,(80, 310),font)
         
@@ -131,7 +136,7 @@ def output(window):
                     objects.data_stuff.insert_db(connection,"player_account",["username","password", "money","bag_level","tank_level", "weapon_level", "inventory"],[f"{user_text}",f"{pass_text}","0","1","1","1","0"])
                     message = "new account made"
             if btn_exit.update(pygame.mouse.get_pos(),event):#exits
-                run = False
+                 sys.exit()
                 
             if event.type == pygame.QUIT: #Quits
                             pygame.quit()

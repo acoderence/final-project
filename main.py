@@ -5,7 +5,7 @@
 
 import interfaces.game
 import interfaces.game_over
-import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits, interfaces.merchant, interfaces.buy,interfaces.intro, interfaces.game2
+import pygame, sys, manager, interfaces.title, interfaces.help, interfaces.credits, interfaces.merchant, interfaces.buy,interfaces.intro 
 pygame.init()
 
 
@@ -39,8 +39,7 @@ while True:
   elif manager.level == 7:
     interfaces.game_over.output(window)
   
-  elif manager.level == 8:
-    interfaces.game2.output(window)
+  
  
   
   

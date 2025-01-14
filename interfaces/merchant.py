@@ -23,6 +23,7 @@ def output(window):
     font2 = pygame.font.SysFont('Consolas', 25)
     #merchant's speech
     text = "Hey! Welcome \nto my shop!" 
+    small_text = ""
     #images, the whole scene is just one image, because nothing was really meant to move so I thought it was easier
     merchant = objects.images.still(0,0,500,500,"images/merchant.png")
     bubble = objects.images.still(-30,-10,360,180,"images/bubbly.png")
@@ -54,6 +55,7 @@ def output(window):
         bubble.draw(window)
         #text gets drawn
         objects.text.blit_text(window,text,(30,30,),font)
+        objects.text.blit_text(window,small_text,(30,30,),font)
         objects.text.blit_text(window,money_display,(340,350,),font2)
     while run == True:
         display()
@@ -80,8 +82,12 @@ def output(window):
                     money_display = f"{money_add}"
                     new_inventory = 0
                     objects.data_stuff.update_db(connection,"player_account",[f"money='{money_add}'",f"inventory='{new_inventory}'"],f"id={int(account_id)}")#updates account
+                    text = "Have a good day!"
                     print(result)
-           
+                elif account_inventory <= 0:
+                    text = ""
+                    small_text = "Erm, You've got\nnothing to sell"
+                    pass
                 
             if event.type == pygame.QUIT: #Quits
                             pygame.quit()
