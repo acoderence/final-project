@@ -30,7 +30,7 @@ def output(window):
        arrows.draw(window)
        spacebar.draw(window)
        help_msg=" How To Play:\n Press arrow keys to MOVE around and space bar to ATTACK enemies.\n Collect treasure by running into it.\n You can sell to the merchant to empty your bag, \nand earn money which you can use to buy upgrades"
-       objects.text.blit_text(window,help_msg,(90,90),font)
+       objects.text.blit_text(window,help_msg, (90,90),font, ((255,255,255)))
        
        
        for event in pygame.event.get(): 

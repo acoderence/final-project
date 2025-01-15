@@ -10,13 +10,14 @@ import objects.scissors
 import objects.treasure
 #lists
 treasures=[]
-inventory=[] 
+
 attack=[]
 bubble=[]
 scissors=[]
 
 
 def output(window): 
+    inventory=[] 
     global enemy_health
     font = pygame.font.SysFont('Consoles',35)  
     #connects to database
@@ -30,7 +31,7 @@ def output(window):
         weapon_level = int(i[6])
         account_id = int(i[0])
         account_inventory = int(i[7])
-    print(result)#############################################################################################################delete later, just to make sure invenotry is returning to 0
+    
     #max capacity for bag to carry, increases by bag level
     max = 0+(int(bag_level) * 5 )
    
@@ -39,11 +40,6 @@ def output(window):
     
     warn = ""#string that displays warning when bag is full, it is blank for now so that it doesn't display it all the time
     
-    mathy = int(account_inventory)/85 #Treausre gets added by value, and for ease we have each value the same, which  is 45. This checks how much treasure the player has collected by dividing by value
-    if int(account_inventory) == 0:
-        mathy = 0
-    invent_make = mathy #invent make will be used later to add already existing treasure into the bag in case the player leaves the water before bag is full, they can come back and 
-    #finsish filling from value they left off on
     
     ox_time = 0#trying to make the count down a little slower
     oxygen_count = 40 +(int(tank_level) * 15)#oxygen count increases with tank level
@@ -92,6 +88,8 @@ def output(window):
     
 
     while run:
+        
+            
         bar = objects.movable.movable(diver.rect.x +20, diver.rect.y+90,oxygen_count, 10, "images/wall.png",1)#health bar. follows player and decreases in size as game goes on
         attack_count+=1
         window.fill((255,255,255))
@@ -129,6 +127,7 @@ def output(window):
     ##redoo!!
         if oxygen_count<=2:#changes screen if oxygen runs out (player dies)
             manager.level=7
+            inventory.clear()
             run=False
        
         key_input = pygame.key.get_pressed()
@@ -159,15 +158,14 @@ def output(window):
                         enemies.remove(x)
         
         #code below is what makes sure that the player in-gmae inventory keeps the value the player had before they returned if they left with it partly filled.           
-        if mathy<= 0:#it goes through that variable made and adds each value into the bag until it's at 0. If the player had nothing in it previously, than nothing happens
-            mathy = 0
-        elif mathy >= 1:
-            invent_make = invent_make -1#subtract
-            inventory.append(int(85)) 
+        #if mathy<= 0:#it goes through that variable made and adds each value into the bag until it's at 0. If the player had nothing in it previously, than nothing happens
+            #mathy = 0
+        
 
-        in_len = len(inventory)-1#I have to keep adding -1 to things becuase they always start at 0(they count 0 as 1 or soemthing), and then the numbers are never right 
-        #if in_len <= -1:#so it doesn't show a negative number hopefully
-            #in_len = 0
+        in_len = len(inventory)#keeps check of inventory
+        if in_len <= -1:
+            in_len = 0#hopefully doesn't accidentally show a negative number
+        
         bag_display = f"{in_len}/{max}"#displays the bag inventory out of the max that the player can collect, which increases with the bag level
         if in_len >= int(max): #If the bag is at mazimum capaxity, the invenotry fraction displays that the bag is full
             bag_display=f"{max}/{max}"
@@ -187,6 +185,7 @@ def output(window):
         #so that the diver can resurface to sell and buy items
         if pygame.sprite.collide_mask(top_wall,diver):
             run=False
+            inventory.clear()
             manager.level=4
             
          
@@ -214,22 +213,25 @@ def output(window):
         for treasure in treasures:
             treasure.draw(window)
             if pygame.sprite.collide_mask(diver, treasure):                         
-                if mathy<= int(max):  #if iventory is less than the max of bag capacity, makes it so that you can't collect more than the bag can hold                      
-                    if len(inventory) <= int(max):#append each treasuere as value into list
-                        treasures.remove(treasure)#remove treasure off the screen   
-                        inventory.append(int(85))  #45 being price of individual treasure 
-                    elif len(inventory) > int(max):#bag will be full, player can no longer collect
-                            warn = "Bag is full"
+                if in_len<= int(max):  #if iventory is less than the max of bag capacity, makes it so that you can't collect more than the bag can hold                      
+                    #append each treasuere as value into list
+                    treasures.remove(treasure)#remove treasure off the screen   
+                    inventory.append(int(85))  #45 being price of individual treasure 
+                    
                 else:
                     warn="Bag is full"#there's two that make sure this text pops up becuase It's picky about showing up sometimes so this just makes sure that it does. 
         sum_inventory= ""#sum inventory would be what get's added to the inventory section on account dtatabase
         
+       
+            
         for i in inventory: #creates the string that gets updated to database which will be the inventory. I also makes sure that if there is nothing, it will be added as zero
             quick_add = f"{sum_inventory}"
             if quick_add == "":
                 quick_add = 0
             i+=int(quick_add)
             sum_inventory = f"{i}"
+            
+        
          
         
         if len(sum_inventory) >=1:#updating invenotry in the database
@@ -242,9 +244,11 @@ def output(window):
             if btn_back.update(pygame.mouse.get_pos(),event):
                 manager.level=4
                 run=False #should not run or continue
+                inventory.clear()
             if btn_exit.update(pygame.mouse.get_pos(),event):
+                inventory.clear()
                 sys.exit()
-            
+               
             
             if event.type == pygame.QUIT: #Quits
                             pygame.quit()

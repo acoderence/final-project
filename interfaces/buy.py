@@ -85,7 +85,13 @@ def output(window):
         
     while run == True:
         display()
-       
+        
+        if tank_level== 5:
+            tank_display = "Max level"
+        if bag_level== 5:
+            bag_display = "Max level"
+        if weapon_level== 5:
+            weapon_display = "Max level"
        
         for event in pygame.event.get(): 
             #each buy buttons works pretty much the same for each piece of upgradable equipment

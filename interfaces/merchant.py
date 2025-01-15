@@ -82,13 +82,13 @@ def output(window):
                     money_display = f"{money_add}"
                     new_inventory = 0
                     objects.data_stuff.update_db(connection,"player_account",[f"money='{money_add}'",f"inventory='{new_inventory}'"],f"id={int(account_id)}")#updates account
-                    text = "Have a good day!"
-                    print(result)
+                    text = "Have a \ngood day!"
                 elif account_inventory <= 0:
                     text = ""
                     small_text = "Erm, You've got\nnothing to sell"
                     pass
                 
+                #print(f"Here|{result}")
             if event.type == pygame.QUIT: #Quits
                             pygame.quit()
                             sys.exit()
