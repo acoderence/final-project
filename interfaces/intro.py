@@ -10,6 +10,8 @@ def output(window):
     hut = objects.images.still(370,120, 300, 300, "images/hut.png")   
     sign = objects.images.still(0,290, 120, 100, "images/sign.png")  
     shop_open= objects.images.still(370,120, 300, 300, "images/hut_open.png")  
+    birds=objects.images.animated(60,40,100,100,"images/flyingbirds.gif",100)
+    seagull=objects.images.still(430,117,45,45,"images/seagull.png")
     #player
     player = objects.intro_move.movable(190,260,120,180, "images/placer.png",6)
     #buttons
@@ -36,6 +38,10 @@ def output(window):
         window.fill((255,255,255))#fills white window, pretty basic, it gets covered by an image anyways
         #background image
         beach.draw(window)
+        birds.draw(window)
+        birds.update()
+        seagull.draw(window)
+        seagull.update()
         #gridHelp(window,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT) #grid
         #draws images
         border.draw(window)

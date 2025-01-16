@@ -83,7 +83,7 @@ def output(window):
                     new_inventory = 0
                     objects.data_stuff.update_db(connection,"player_account",[f"money='{money_add}'",f"inventory='{new_inventory}'"],f"id={int(account_id)}")#updates account
                     text = "Have a \ngood day!"
-                elif account_inventory <= 0:
+                elif account_inventory <= 0:#if player has no items to sell
                     text = ""
                     small_text = "Erm, You've got\nnothing to sell"
                     pass

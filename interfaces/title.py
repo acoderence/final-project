@@ -7,6 +7,7 @@ def output(window):
     
     fall=objects.images.animated(0,0,manager.WINDOW_WIDTH,manager.WINDOW_HEIGHT,"images/fallingfish.gif", 40)  
     font = pygame.font.SysFont('Consolas', 20)
+    font2 = pygame.font.SysFont('Consolas', 15)
     run = True
     #buttons
     btn_play = objects.buttons.with_images(150,310, 250, 150, "images/play_1.png", "images/play_2.png")
@@ -18,6 +19,9 @@ def output(window):
     #test boxes for username and password input
     txt_user = objects.text.input(170,170, 150,50,'Consolas',20,(0,0,0), (61, 132, 209))
     txt_pass = objects.text.input(170,250, 150,50,'Consolas',20,(0,0,0), (61, 132, 209))
+    user_name = "Username"
+    pass_word = "Password"
+    new_account = "Click here to \ncreate new account"
     
     #connection to data base
     connection = objects.data_stuff.create_connection('player_account.db')
@@ -49,6 +53,9 @@ def output(window):
         fall.update()
         #draws the game output (the message string)
         objects.text.blit_text(window,message,(80, 310),font)
+        objects.text.blit_text(window,user_name,(170, 150),font)
+        objects.text.blit_text(window,pass_word,(170, 230),font)
+        objects.text.blit_text(window,new_account,(330, 310),font2)
         
     def gridHelp(window,WINDOW_WIDTH, WINDOW_HEIGHT):#just the grid as always
         spacer = 10

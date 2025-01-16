@@ -157,9 +157,7 @@ def output(window):
                     if x.health <=1:
                         enemies.remove(x)
         
-        #code below is what makes sure that the player in-gmae inventory keeps the value the player had before they returned if they left with it partly filled.           
-        #if mathy<= 0:#it goes through that variable made and adds each value into the bag until it's at 0. If the player had nothing in it previously, than nothing happens
-            #mathy = 0
+        
         
 
         in_len = len(inventory)#keeps check of inventory
